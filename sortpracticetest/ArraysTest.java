@@ -50,7 +50,7 @@ public class ArraysTest {
 	
 	@Test
 	public void mergedArrayListsShouldBeSorted() {
-		int testIterations = 40;
+		int testIterations = 5;
 		int maxLenArr1 = 50;
 		int maxLenArr2 = 50;
 		for (int it = 0; it < testIterations; it++)
@@ -83,6 +83,26 @@ public class ArraysTest {
 			assertTrue(result);
 		}
 		
+	}
+	
+	@Test
+	public void mergedsortedArrayShouldBeSorted() 
+	{
+		int maxSize = 1000;
+		int maxInteger = 850;
+		int iterations = 40;
+		for (int it = 0; it < iterations; it++) {
+			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println("Now testing mergesort algorithm");
+	
+			ArrayList<Integer> arr = randomIntegerArrayList(size, maxInteger);
+			System.out.println(arr);
+			arr = Arrays.mergesort(arr);
+			System.out.println(arr);
+			boolean isSorted = isSorted(arr);
+			assertTrue(isSorted);
+		}
 	}
 
 	

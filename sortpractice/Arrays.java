@@ -32,5 +32,21 @@ public abstract class Arrays {
 		return newarray;
 	}
 	
+	public static <E extends Comparable<E>> ArrayList<E> mergesort(ArrayList<E> arr) 
+	{
+		int len = arr.size();
+		if (len > 1) 
+		{
+			int half = len/2;
+			ArrayList<E> frontHalf = new ArrayList<E>(arr.subList(0,half));
+			ArrayList<E> backHalf = new ArrayList<E>(arr.subList(half,arr.size()));
+			frontHalf = mergesort(frontHalf);
+			backHalf = mergesort(backHalf);
+			arr = mergeSortedArrayLists(frontHalf,backHalf);
+		}
+		return arr;
+	}
+    
+	
 
 }
