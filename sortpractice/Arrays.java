@@ -17,7 +17,7 @@ public abstract class Arrays {
 				newarray.add(arr1.get(index1));
 				index1++;
 			} else {
-				newarray.add(arr2.get(index2++));
+				newarray.add(arr2.get(index2));
 				index2++;
 			}
 		}
@@ -31,4 +31,6 @@ public abstract class Arrays {
 		}
 		return newarray;
 	}
+	
+
 }

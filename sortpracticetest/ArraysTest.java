@@ -10,6 +10,16 @@ import java.util.ArrayList;
 public class ArraysTest {
 
 	
+	public ArrayList<Integer> randomIntegerArrayList(int size, int max)
+	{
+		ArrayList<Integer> arr = new ArrayList<>(size);
+		for (int i = 0; i < size; i++)
+		{
+			arr.add(ThreadLocalRandom.current().nextInt(0, max));
+		}
+		return arr;
+	}
+	
 	public ArrayList<Integer> sortedIntegerArrayList(int size)
 	{
 		ArrayList<Integer> arr = new ArrayList<>();
@@ -41,8 +51,8 @@ public class ArraysTest {
 	@Test
 	public void mergedArrayListsShouldBeSorted() {
 		int testIterations = 40;
-		int maxLenArr1 = 1000;
-		int maxLenArr2 = 1000;
+		int maxLenArr1 = 50;
+		int maxLenArr2 = 50;
 		for (int it = 0; it < testIterations; it++)
 		{
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -63,15 +73,17 @@ public class ArraysTest {
 			} else {
 				System.out.println("Array 2 is longer");
 			}
-			
-			
 			ArrayList<Integer> mergedArray = Arrays.mergeSortedArrayLists(arr1,arr2);
+			
 			System.out.println("merged array");
 			System.out.println(mergedArray);
 			boolean result = isSorted(mergedArray);
+			assertTrue(mergedArray.size() == arr1.size() + arr2.size());
+			
 			assertTrue(result);
 		}
 		
 	}
 
+	
 }
