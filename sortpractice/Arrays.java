@@ -72,4 +72,26 @@ public abstract class Arrays {
 		}
 		return arr;
 	}
+	
+	public static <E extends Comparable<E>> ArrayList<E> insertionsort(ArrayList<E> arr)
+	{
+		//the array is sorted up through the index before the partition index
+		int len = arr.size();
+		if (len <= 1)
+			return arr;
+		for(int partition = 1; partition < len; partition++)
+		{
+			E itemToInsert = arr.get(partition);
+			int itemConsideredIndex = partition - 1;
+			while (itemConsideredIndex > -1 && arr.get(itemConsideredIndex).compareTo(itemToInsert) > 0)
+			{
+				arr.set(itemConsideredIndex + 1, arr.get(itemConsideredIndex));
+				//shift item at this index forward by one, overwriting
+				itemConsideredIndex--;
+			}
+			arr.set(itemConsideredIndex + 1, itemToInsert);
+		}
+		
+		return arr;
+	}
 }
