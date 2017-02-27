@@ -108,9 +108,9 @@ public class ArraysTest {
 	@Test
 	public void bubblesortedArrayShouldBeSorted() 
 	{
-		int maxSize = 100;
-		int maxInteger = 180;
-		int iterations = 10;
+		int maxSize = 1000;
+		int maxInteger = 1800;
+		int iterations = 40;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");

@@ -63,18 +63,13 @@ public abstract class Arrays {
 		//everything to the right of partition is in order
 		while (partition > 0)
 		{
-			int maxIndex = 0;
-			E max = arr.get(maxIndex);
-			for (int i = 0; i < partition; i++) {
-				if (arr.get(i).compareTo(max) > 0)
-				{
-					max = arr.get(i);
-					maxIndex = i;
-				}
+			int antepartition = partition - 1;
+			for (int i = 0; i < antepartition; i++) {
+				if (arr.get(i).compareTo(arr.get(i+1)) > 0)
+					arrayListSwap(arr, i,i+1);
 			}
-			arrayListSwap(arr, maxIndex, --partition);
+			partition--;
 		}
 		return arr;
 	}
-
 }
