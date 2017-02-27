@@ -47,6 +47,34 @@ public abstract class Arrays {
 		return arr;
 	}
     
+	private static <E> void arrayListSwap(ArrayList<E> arr, int indexA, int indexB)
+	{
+		E placeholder = arr.get(indexB);
+		arr.set(indexB, arr.get(indexA));
+		arr.set(indexA, placeholder);
+	}
 	
+	public static <E extends Comparable<E>> ArrayList<E> bubblesort(ArrayList<E> arr)
+	{
+		int len = arr.size();
+		if (len <= 1)
+			return arr;
+		int partition = len; 
+		//everything to the right of partition is in order
+		while (partition > 0)
+		{
+			int maxIndex = 0;
+			E max = arr.get(maxIndex);
+			for (int i = 0; i < partition; i++) {
+				if (arr.get(i).compareTo(max) > 0)
+				{
+					max = arr.get(i);
+					maxIndex = i;
+				}
+			}
+			arrayListSwap(arr, maxIndex, --partition);
+		}
+		return arr;
+	}
 
 }

@@ -90,7 +90,7 @@ public class ArraysTest {
 	{
 		int maxSize = 1000;
 		int maxInteger = 850;
-		int iterations = 40;
+		int iterations = 10;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -105,5 +105,27 @@ public class ArraysTest {
 		}
 	}
 
+	@Test
+	public void bubblesortedArrayShouldBeSorted() 
+	{
+		int maxSize = 100;
+		int maxInteger = 180;
+		int iterations = 10;
+		for (int it = 0; it < iterations; it++) {
+			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println("Now testing bubblesort algorithm");
+			ArrayList<Integer> arr = randomIntegerArrayList(size, maxInteger);
+			System.out.println(arr);
+			arr = Arrays.bubblesort(arr);
+			System.out.println(arr);
+			boolean isSorted = isSorted(arr);
+			assertTrue(arr.size() == size);
+			assertTrue(isSorted);
+		}	
+		
+	
+	}
+	
 	
 }
