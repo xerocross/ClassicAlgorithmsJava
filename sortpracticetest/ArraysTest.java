@@ -39,7 +39,7 @@ public class ArraysTest {
 	
 	@Test
 	public void mergedArrayListsShouldBeSorted() {
-		int testIterations = 1;
+		int testIterations = 0;
 		int maxLenArr1 = 50;
 		int maxLenArr2 = 50;
 		for (int it = 0; it < testIterations; it++)
@@ -79,7 +79,7 @@ public class ArraysTest {
 	{
 		int maxSize = 1000;
 		int maxInteger = 850;
-		int iterations = 1;
+		int iterations = 0;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -99,7 +99,7 @@ public class ArraysTest {
 	{
 		int maxSize = 1000;
 		int maxInteger = 1800;
-		int iterations = 1;
+		int iterations = 0;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -119,7 +119,7 @@ public class ArraysTest {
 	{
 		int maxSize = 150;
 		int maxInteger = 180;
-		int iterations = 40;
+		int iterations = 0;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -132,9 +132,26 @@ public class ArraysTest {
 			assertTrue(arr.size() == size);
 			assertTrue(isSorted);
 		}
+	}
 	
-	
-	
+	@Test
+	public void heapsortedArrayListShouldBeSorted() 
+	{
+		int maxSize = 150;
+		int maxInteger = 1800;
+		int iterations = 40;
+		for (int it = 0; it < iterations; it++) {
+			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println("Now testing heapsort algorithm");
+			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
+			System.out.println(arr);
+			arr = Arrays.heapsortArrayList(arr);
+			System.out.println(arr);
+			boolean isSorted = isSorted(arr);
+			assertTrue(arr.size() == size);
+			assertTrue(isSorted);
+		}
 	}
 	
 	

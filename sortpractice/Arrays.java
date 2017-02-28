@@ -106,4 +106,17 @@ public abstract class Arrays {
 		
 		return arr;
 	}
+	
+	public static <E extends Comparable<E>> ArrayList<E> heapsortArrayList(ArrayList<E> arr)
+	{
+		BinaryHeap<E> heap = new BinaryHeap<E>(arr);
+		int size = arr.size();
+		int partition = size;
+		for (; partition > 0; partition--) 
+		{
+			heap.heapify(0, partition);
+			Arrays.arrayListSwap(heap, 0, partition-1);	
+		}
+		return heap;
+	}
 }
