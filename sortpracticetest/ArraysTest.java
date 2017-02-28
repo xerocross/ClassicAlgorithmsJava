@@ -8,17 +8,6 @@ import sortpractice.Arrays;
 import java.util.ArrayList;
 
 public class ArraysTest {
-
-	
-	public ArrayList<Integer> randomIntegerArrayList(int size, int max)
-	{
-		ArrayList<Integer> arr = new ArrayList<>(size);
-		for (int i = 0; i < size; i++)
-		{
-			arr.add(ThreadLocalRandom.current().nextInt(0, max));
-		}
-		return arr;
-	}
 	
 	public ArrayList<Integer> sortedIntegerArrayList(int size)
 	{
@@ -96,7 +85,7 @@ public class ArraysTest {
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 			System.out.println("Now testing mergesort algorithm");
 	
-			ArrayList<Integer> arr = randomIntegerArrayList(size, maxInteger);
+			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
 			System.out.println(arr);
 			arr = Arrays.mergesort(arr);
 			System.out.println(arr);
@@ -115,7 +104,7 @@ public class ArraysTest {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 			System.out.println("Now testing bubblesort algorithm");
-			ArrayList<Integer> arr = randomIntegerArrayList(size, maxInteger);
+			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
 			System.out.println(arr);
 			arr = Arrays.bubblesort(arr);
 			System.out.println(arr);
@@ -135,7 +124,7 @@ public class ArraysTest {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 			System.out.println("Now testing insertionSort algorithm");
-			ArrayList<Integer> arr = randomIntegerArrayList(size, maxInteger);
+			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
 			System.out.println(arr);
 			arr = Arrays.insertionsort(arr);
 			System.out.println(arr);
