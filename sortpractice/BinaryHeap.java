@@ -87,30 +87,18 @@ public class BinaryHeap<E extends Comparable<E>> extends ArrayList<E>
 
 	public void heapify(int baseIndex)
 	{
-		System.out.println("baseIndex is " + baseIndex);
 		if (hasRightChild(baseIndex))
 		{
 			int rChildIndex = getRightChildIndex(baseIndex);
 			if (get(rChildIndex).compareTo(get(baseIndex)) > 0) 
 			{
-				System.out.println("swap with right child");
-				System.out.println("right child index: " + rChildIndex);
 				swap(rChildIndex,baseIndex);
 				heapify(rChildIndex);
 			}
 		}
-		System.out.println(this);
 		if (hasLeftChild(baseIndex))
 		{
 			int lChildIndex = getLeftChildIndex(baseIndex);
-			System.out.println("swap with left child");
-			System.out.println("left child index: " + lChildIndex);
-			E a = get(lChildIndex);
-			System.out.println("a" + a);
-			E b = get(baseIndex);
-			System.out.println("b" + b);
-			if (a.compareTo(b) > 0)
-				System.out.println("W");
 			if (get(lChildIndex).compareTo(get(baseIndex)) > 0) 
 			{
 				swap(lChildIndex,baseIndex);
