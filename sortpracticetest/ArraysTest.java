@@ -8,6 +8,7 @@ import sortpractice.Arrays;
 import java.util.ArrayList;
 
 public class ArraysTest {
+	public final String DIVIDER = "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
 	
 	public ArrayList<Integer> sortedIntegerArrayList(int size)
 	{
@@ -44,7 +45,7 @@ public class ArraysTest {
 		int maxLenArr2 = 50;
 		for (int it = 0; it < testIterations; it++)
 		{
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println(DIVIDER);
 			System.out.println("iteration " + it);
 
 			int len1 = ThreadLocalRandom.current().nextInt(2, maxLenArr1);
@@ -82,7 +83,7 @@ public class ArraysTest {
 		int iterations = 0;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println(DIVIDER);
 			System.out.println("Now testing mergesort algorithm");
 	
 			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
@@ -102,7 +103,7 @@ public class ArraysTest {
 		int iterations = 0;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println(DIVIDER);
 			System.out.println("Now testing bubblesort algorithm");
 			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
 			System.out.println(arr);
@@ -122,7 +123,7 @@ public class ArraysTest {
 		int iterations = 0;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println(DIVIDER);
 			System.out.println("Now testing insertionSort algorithm");
 			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
 			System.out.println(arr);
@@ -142,7 +143,7 @@ public class ArraysTest {
 		int iterations = 40;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
-			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			System.out.println(DIVIDER);
 			System.out.println("Now testing heapsort algorithm");
 			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
 			System.out.println(arr);
