@@ -24,13 +24,7 @@ public class BinaryHeap<E extends Comparable<E>> extends ArrayList<E>
 			this.add(arrIterator.next());
 	}
 	
-	
-	private int translateIndex(int heapIndex)
-	{
-		return heapIndex - 1;
-	}
-	
-	
+
 	public boolean hasLeftChild(int index)
 	{
 		return (2*index + 1 < this.size());
@@ -85,28 +79,42 @@ public class BinaryHeap<E extends Comparable<E>> extends ArrayList<E>
 	}
 	
 
-	public void heapify(int baseIndex)
+	public void heapifyDownward(int baseIndex, int maxIndex)
 	{
-		if (hasRightChild(baseIndex))
+		if (baseIndex == maxIndex)
+			return;
+		if (hasRightChild(baseIndex) && getRightChildIndex(baseIndex) < maxIndex)
 		{
 			int rChildIndex = getRightChildIndex(baseIndex);
 			if (get(rChildIndex).compareTo(get(baseIndex)) > 0) 
 			{
 				swap(rChildIndex,baseIndex);
-				heapify(rChildIndex);
+				heapifyDownward(rChildIndex, maxIndex);
 			}
 		}
-		if (hasLeftChild(baseIndex))
+		if (hasLeftChild(baseIndex) && getLeftChildIndex(baseIndex) < maxIndex)
 		{
 			int lChildIndex = getLeftChildIndex(baseIndex);
 			if (get(lChildIndex).compareTo(get(baseIndex)) > 0) 
 			{
 				swap(lChildIndex,baseIndex);
-				heapify(lChildIndex);
+				heapifyDownward(lChildIndex, maxIndex);
 			}
 		}
+		
+	}
+	public void heapify(int baseIndex, int maxIndex)
+	{
+		int size = this.size();
+		int half = size/2;
+		for (int i = half; 0 <= i; i--)
+		{
+			heapifyDownward(i, maxIndex);
+		}	
 	}
 	
+
+
 	
 	
 }

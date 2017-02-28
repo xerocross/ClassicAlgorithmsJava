@@ -44,13 +44,9 @@ public class BinaryHeapTest {
 			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(7, 30);
 			BinaryHeap<Integer> heap = new BinaryHeap<>(arr);
 			System.out.println(heap);
-			heap.heapify(0);
 			int size = heap.size();
-			int half = size/2;
-			for (int i = half; 0 <= i; i--)
-			{
-				heap.heapify(i);
-			}
+			heap.heapify(0, size);
+	
 			assertTrue(BinaryHeaps.isHeap(heap));
 			System.out.println(heap);	
 		}
