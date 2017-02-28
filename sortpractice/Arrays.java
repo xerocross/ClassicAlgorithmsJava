@@ -1,8 +1,20 @@
 package sortpractice;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Arrays {
 
+	
+	public static ArrayList<Integer> randomIntegerArrayList(int size, int max)
+	{
+		ArrayList<Integer> arr = new ArrayList<>(size);
+		for (int i = 0; i < size; i++)
+		{
+			arr.add(ThreadLocalRandom.current().nextInt(0, max));
+		}
+		return arr;
+	}
+	
 	//merge two sorted arrays into a new sorted array
 	public static <E extends Comparable<E>> ArrayList<E> mergeSortedArrayLists(ArrayList<E> arr1, ArrayList<E> arr2)
 	{
