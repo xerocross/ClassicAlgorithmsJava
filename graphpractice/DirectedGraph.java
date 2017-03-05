@@ -96,4 +96,9 @@ public class DirectedGraph {
 	Set<DirectedEdge> getEdges() {
 		return edgeMap.keySet();
 	}
+	
+	public int size()
+	{
+		return getEdges().size();
+	}
 }
