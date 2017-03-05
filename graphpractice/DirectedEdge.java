@@ -2,12 +2,12 @@ package graphpractice;
 
 public class DirectedEdge
 {
-	public int first;
-	public int second;
-	public DirectedEdge(int first, int second) 
+	public int initial;
+	public int terminal;
+	public DirectedEdge(int initial, int terminal) 
 	{
-		this.first = first;
-		this.second = second;
+		this.initial = initial;
+		this.terminal = terminal;
 	}
 	
 	public boolean equals (Object o) 
@@ -17,7 +17,7 @@ public class DirectedEdge
 		if ( !(o instanceof DirectedEdge) ) 
 			return false;
 		DirectedEdge that = (DirectedEdge) o;
-		if (this.first == that.first && this.second == that.second)
+		if (this.initial == that.initial && this.terminal == that.terminal)
 			return true;
 		else
 			return false;
@@ -25,6 +25,6 @@ public class DirectedEdge
 	
 	public int hashCode() 
 	{
-		return (int) (Math.pow(2, this.first)*Math.pow( 3,this.second));
+		return (int) (Math.pow(2, this.initial)*Math.pow( 3,this.terminal));
 	}
 }
