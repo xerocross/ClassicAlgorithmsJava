@@ -119,4 +119,40 @@ public abstract class Arrays {
 		}
 		return heap;
 	}
+	
+	public static <E extends Comparable<E>> int partition (ArrayList<E> arr, int lo, int hi)
+	{
+		E pivot = arr.get(lo);
+		int i = lo - 1;
+		int j = hi + 1;
+		while (true)
+		{
+			do
+			{
+				i = i+1;
+			} while (arr.get(i).compareTo(pivot) < 0);
+			do
+			{
+				j = j - 1;
+			} while (arr.get(j).compareTo(pivot) > 0);
+			if (i >= j)
+				return j;
+			Arrays.arrayListSwap(arr, i, j);
+		}
+	}
+	
+	public static <E extends Comparable<E>> ArrayList<E> quicksort(ArrayList<E> arr, int lo, int hi)
+	{
+		if (lo < hi)
+		{
+			int p = partition(arr, lo, hi);
+			quicksort(arr,lo, p);
+			quicksort(arr,p+1,hi);
+		}
+		
+		return arr;
+	}
+	
+	
+	
 }

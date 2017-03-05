@@ -2,9 +2,11 @@ package sortpracticetest;
 
 import static org.junit.Assert.*;
 
+
 import org.junit.Test;
 import java.util.concurrent.ThreadLocalRandom;
 import sortpractice.Arrays;
+
 import java.util.ArrayList;
 
 public class ArraysTest {
@@ -40,7 +42,7 @@ public class ArraysTest {
 	
 	@Test
 	public void mergedArrayListsShouldBeSorted() {
-		int testIterations = 0;
+		int testIterations = 20;
 		int maxLenArr1 = 50;
 		int maxLenArr2 = 50;
 		for (int it = 0; it < testIterations; it++)
@@ -76,11 +78,11 @@ public class ArraysTest {
 	}
 	
 	@Test
-	public void mergedsortedArrayShouldBeSorted() 
+	public void mergesortedArrayShouldBeSorted() 
 	{
 		int maxSize = 1000;
 		int maxInteger = 850;
-		int iterations = 0;
+		int iterations = 20;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println(DIVIDER);
@@ -100,7 +102,7 @@ public class ArraysTest {
 	{
 		int maxSize = 1000;
 		int maxInteger = 1800;
-		int iterations = 0;
+		int iterations = 20;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println(DIVIDER);
@@ -120,7 +122,7 @@ public class ArraysTest {
 	{
 		int maxSize = 150;
 		int maxInteger = 180;
-		int iterations = 0;
+		int iterations = 20;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println(DIVIDER);
@@ -140,7 +142,7 @@ public class ArraysTest {
 	{
 		int maxSize = 150;
 		int maxInteger = 1800;
-		int iterations = 40;
+		int iterations = 20;
 		for (int it = 0; it < iterations; it++) {
 			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
 			System.out.println(DIVIDER);
@@ -154,6 +156,28 @@ public class ArraysTest {
 			assertTrue(isSorted);
 		}
 	}
+	@Test
+	public void quicksortedArrayListShouldBeSorted() 
+	{
+		int maxSize = 150;
+		int maxInteger = 580;
+		int iterations = 20;
+		
+		
+		for (int itr = 0; itr < iterations; itr++) {
+			System.out.println(DIVIDER);
+			System.out.println("Now testing quicksort algorithm");
+			int size = ThreadLocalRandom.current().nextInt(2, maxSize);
+			ArrayList<Integer> arr = Arrays.randomIntegerArrayList(size, maxInteger);
+			System.out.println(arr);
+			arr = Arrays.quicksort(arr, 0, arr.size()-1);
+			System.out.println(arr);
+			assertTrue(isSorted(arr));
+		}
+	}
+	
+	
+	
 	
 	
 }
