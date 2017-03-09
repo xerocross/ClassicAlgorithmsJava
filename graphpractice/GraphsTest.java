@@ -8,7 +8,7 @@ public class GraphsTest {
 
 	@Test
 	public void minimalPathCostTest() {
-		DirectedGraph dg = new DirectedGraph(6);
+		DirectedWeightedHashGraph dg = new DirectedWeightedHashGraph(6);
 		dg.addEdge(0, 1, 1);
 		dg.addEdge(0, 2, 2);
 		dg.addEdge(1, 3, 3);

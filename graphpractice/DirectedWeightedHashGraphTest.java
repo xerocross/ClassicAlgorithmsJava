@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class DirectedGraphTest {
+public class DirectedWeightedHashGraphTest {
 
 	@Test
 	public void addEdgeTest() 
 	{
-		DirectedGraph dg = new DirectedGraph(9);
+		DirectedWeightedHashGraph dg = new DirectedWeightedHashGraph(9);
 		dg.addEdge(0, 2, 1);
 		dg.addEdge(0, 3, 2);
 		dg.addEdge(2, 5, 7);
@@ -23,7 +23,7 @@ public class DirectedGraphTest {
 	@Test
 	public void getCostTest() 
 	{
-		DirectedGraph dg = new DirectedGraph(9);
+		DirectedWeightedHashGraph dg = new DirectedWeightedHashGraph(9);
 		dg.addEdge(0, 2, 1);
 		dg.addEdge(0, 3, 2);
 		dg.addEdge(2, 5, 7);
@@ -35,7 +35,7 @@ public class DirectedGraphTest {
 	@Test
 	public void removeEdgeTest() 
 	{
-		DirectedGraph dg = new DirectedGraph(9);
+		DirectedWeightedHashGraph dg = new DirectedWeightedHashGraph(9);
 		dg.addEdge(0, 2, 1);
 		dg.addEdge(0, 3, 2);
 		dg.addEdge(2, 5, 7);
@@ -48,7 +48,7 @@ public class DirectedGraphTest {
 	@Test
 	public void attemptInvalidInput()
 	{
-		DirectedGraph dg = new DirectedGraph(9);
+		DirectedWeightedHashGraph dg = new DirectedWeightedHashGraph(9);
 		assertTrue(!dg.addEdge(0, 12, 15));
 		assertTrue(!dg.addEdge(-1, 5, 15));
 		assertTrue(!dg.addEdge(0, 2, -1));

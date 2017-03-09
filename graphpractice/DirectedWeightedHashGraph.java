@@ -11,14 +11,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Adam Cross
  *
  */
-
-
-public class DirectedGraph {
+public class DirectedWeightedHashGraph {
 	int numNodes;
 
 	private Map<DirectedEdge,Integer> edgeMap;
 	
-	public DirectedGraph(int numNodes)
+	public DirectedWeightedHashGraph(int numNodes)
 	{
 		this.numNodes = numNodes;
 		edgeMap = new HashMap<DirectedEdge,Integer>();
