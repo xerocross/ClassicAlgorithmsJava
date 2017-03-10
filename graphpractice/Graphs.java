@@ -9,29 +9,118 @@ import java.util.*;
  * @author Adam Cross
  *
  */
+
+class VertexData
+{
+	Vertex vertex;
+	int inDegree;
+	public Set<Vertex> inVertices;
+	
+	VertexData(Vertex vertex) 
+	{
+		this.vertex = vertex;
+		 inVertices = new HashSet<Vertex>();
+	}
+}
+
+
 public abstract class Graphs 
 {
-	private static Integer computeInfinity(DirectedGraph graph)
+	
+	public static ArrayList<Vertex> topSort(DirectedGraph graph)
 	{
-		Integer inf = 0;
+		ArrayList<VertexData> vertexDataList = buildVertexData(graph);
+		populateInVertices(vertexDataList);
+		Stack<VertexData> readyVertices = new Stack<>();
+		updateReadyStack(vertexDataList,readyVertices);
+		ArrayList<Vertex> topSortedList = new ArrayList<>();
+		while (!readyVertices.isEmpty())
+		{
+			VertexData next = readyVertices.pop();
+			topSortedList.add(next.vertex);
+			for (VertexData vDat : vertexDataList)
+				vDat.inVertices.remove(next.vertex);
+			updateReadyStack(vertexDataList,readyVertices);
+		}
+		
+		if (topSortedList.size() != graph.size())
+			throw new IllegalGraphException("graph could not be top-sorted");
+		return topSortedList;
+	}
+	
+	//this method used for top sort
+	static void updateReadyStack(ArrayList<VertexData> vertexDataList, Stack<VertexData> readyVertices)
+	{
+		Stack<VertexData> removeThese = new Stack<>();
+		for (VertexData vDat : vertexDataList)
+		{
+			if (vDat.inVertices.size() == 0)
+			{
+				readyVertices.push(vDat);
+				removeThese.push(vDat);
+			}
+		}
+		while(!removeThese.isEmpty())
+			vertexDataList.remove(removeThese.pop());
+	}
+	
+	
+	//this method used for top sort
+	private static ArrayList<VertexData> buildVertexData(DirectedGraph graph)
+	{
+		ArrayList<Vertex> vertices =  graph.getVertices();
+		ArrayList<VertexData> vertexDataList = new ArrayList<VertexData>();
+		for (Vertex v : vertices)
+		{
+			vertexDataList.add(new VertexData(v));
+		}
+		return vertexDataList;
+	}
+	
+	//this method used for top sort
+	private static void populateInVertices(ArrayList<VertexData> vertexDataList)
+	{
+		Set<Vertex> adjacentVerticies;
+		for (VertexData vDatOuter : vertexDataList)
+		{
+			for (VertexData vDatInner : vertexDataList)
+			{
+				if (vDatOuter == vDatInner) 
+				{
+					continue;
+				}
+				adjacentVerticies = vDatInner.vertex.getAdjacent();
+				if (adjacentVerticies.contains(vDatOuter.vertex))
+				{ // the vDatInner vertex points to vDatOuter
+					vDatOuter.inVertices.add(vDatInner.vertex);
+				}
+			}
+		}
+	}
+	
+	//this method is used for minimalPathCost
+	private static Double computeInfinity(DirectedWeightedGraph graph)
+	{
+		Double inf = 0.;
 		Set<DirectedEdge> keys = graph.getEdges();
 		for (DirectedEdge key : keys)
 		{
-			inf+=graph.getEdgeCost(key.initial, key.terminal);
+			inf+=graph.getEdgeWeight(key);
 		}
 		return inf;
 	}
-	private static Integer[][] FloydMatrix(int extraNode, Integer[][] costMatrix)
+	//this method is used for minimalPathCost
+	private static Double[][] FloydMatrix(int extraNode, Double[][] costMatrix)
 	{
-		int size = costMatrix.length;
-		Integer[][] floydMatrix = new Integer[size][size];
+		int size = costMatrix.length; //number of vertices
+		Double[][] floydMatrix = new Double[size][size];
 		
 		for (int row = 0; row < size; row++)
 		{
 			for (int col = 0; col < size; col++)
 			{
-				int cost = costMatrix[row][col];
-				int newPathCost = costMatrix[row][extraNode] + costMatrix[extraNode][col];
+				Double cost = costMatrix[row][col];
+				Double newPathCost = costMatrix[row][extraNode] + costMatrix[extraNode][col];
 				floydMatrix[row][col] = Math.min(cost, newPathCost);
 			}
 		}
@@ -48,27 +137,28 @@ public abstract class Graphs
 	 * of the path between node i and node j having minimal cost
 	 * among all possible paths.
 	 */
-	public static Integer[][] minimalPathCost(DirectedGraph graph)
+	public static Double[][] minimalPathCost(DirectedWeightedGraph graph)
 	{
 		int size = graph.size();
-		Integer[][] costMatrix = new Integer[size][size];
+		Double[][] costMatrix = new Double[size][size];
 		// implement Floyd's algorithm
-		Integer cost;
-		Integer inf = computeInfinity(graph);
+		Double cost;
+		Double inf = computeInfinity(graph);
 		for (int row = 0; row < size; row++)
 		{
 			for (int col = 0; col < size; col++)
 			{
-				cost = graph.getEdgeCost(row, col);
+				DirectedEdge pEdge = new DirectedEdge(graph.getVertex(row),graph.getVertex(col));
+				cost = graph.getEdgeWeight(pEdge);
 				if (cost == null)
 					costMatrix[row][col] = inf;
 				else if (row == col) 
-					costMatrix[row][col] = 0;
+					costMatrix[row][col] = 0.;
 				else
 					costMatrix[row][col] = cost;
 			}
 		}
-		Integer[][] floydMatrix = costMatrix;
+		Double[][] floydMatrix = costMatrix;
 		for (int node = 0; node < size; node++) 
 		{
 			floydMatrix = FloydMatrix(node,floydMatrix);

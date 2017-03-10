@@ -1,13 +1,30 @@
 package graphpractice;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Vertex 
 {
-	public ArrayList<Vertex> adjacentVertices;
+	private Set<Vertex> adjacentVertices;
+	public String name;
+	
+	public Set<Vertex> getAdjacent()
+	{
+		Set<Vertex> adjacentCopy = new HashSet<>();
+		for (Vertex v : adjacentVertices)
+		{
+			adjacentCopy.add(v);
+		}
+		return adjacentCopy;
+	}
 	
 	public Vertex() 
 	{
-		adjacentVertices = new ArrayList<Vertex>();
+		adjacentVertices = new HashSet<Vertex>();
+	}
+	
+	public Vertex(String name) 
+	{
+		adjacentVertices = new HashSet<Vertex>();
+		this.name = name;
 	}
 	
 	public void addAdjacent(Vertex o)
@@ -21,5 +38,9 @@ public class Vertex
 	{
 		if (adjacentVertices.contains(o))
 			adjacentVertices.remove(o);
+	}
+	public String toString()
+	{
+		return name;
 	}
 }
