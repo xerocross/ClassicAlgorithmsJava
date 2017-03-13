@@ -1,29 +1,30 @@
 package graphpractice;
 
-public class DirectedEdge
+public class DirectedEdge extends Edge
 {
-	public Vertex initial;
-	public Vertex terminal;
-	
 	public DirectedEdge(Vertex initial, Vertex terminal)
 	{
-		this.initial = initial;
-		this.terminal = terminal;
+		super(initial,terminal);
+	}
+	public Vertex getInitial()
+	{
+		return super.getLeft();
+	}
+	public Vertex getTerminal()
+	{
+		return super.getRight();
 	}
 	public boolean equals(Object o)
 	{
-		if (this == o)
+		if (this == o) {
 			return true;
+		}
 		if (o instanceof DirectedEdge)
 		{
 			DirectedEdge that = (DirectedEdge) o;
-			if (that.initial == this.initial && that.terminal == this.terminal)
+			if (that.getInitial() == this.getInitial() && that.getTerminal() == this.getTerminal())
 				return true;
 		}
 		return false;
-	}
-	public int hashCode()
-	{
-		return (this.initial.hashCode()/2) + (this.terminal.hashCode()/2);
 	}
 }

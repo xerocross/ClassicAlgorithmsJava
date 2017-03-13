@@ -30,7 +30,7 @@ public abstract class Graphs
 	public static ArrayList<Vertex> topSort(DirectedGraph graph)
 	{
 		ArrayList<VertexData> vertexDataList = buildVertexData(graph);
-		populateInVertices(vertexDataList);
+		populateInVertices(graph, vertexDataList);
 		Stack<VertexData> readyVertices = new Stack<>();
 		updateReadyStack(vertexDataList,readyVertices);
 		ArrayList<Vertex> topSortedList = new ArrayList<>();
@@ -78,7 +78,7 @@ public abstract class Graphs
 	}
 	
 	//this method used for top sort
-	private static void populateInVertices(ArrayList<VertexData> vertexDataList)
+	private static void populateInVertices(DirectedGraph g, ArrayList<VertexData> vertexDataList)
 	{
 		Set<Vertex> adjacentVerticies;
 		for (VertexData vDatOuter : vertexDataList)
@@ -89,7 +89,7 @@ public abstract class Graphs
 				{
 					continue;
 				}
-				adjacentVerticies = vDatInner.vertex.getAdjacent();
+				adjacentVerticies = g.getAdjacentVertices(vDatInner.vertex);
 				if (adjacentVerticies.contains(vDatOuter.vertex))
 				{ // the vDatInner vertex points to vDatOuter
 					vDatOuter.inVertices.add(vDatInner.vertex);
@@ -102,10 +102,10 @@ public abstract class Graphs
 	private static Double computeInfinity(DirectedWeightedGraph graph)
 	{
 		Double inf = 0.;
-		Set<DirectedEdge> keys = graph.getEdges();
-		for (DirectedEdge key : keys)
+		Set<Edge> keys = graph.getEdges();
+		for (Edge key : keys)
 		{
-			inf+=graph.getEdgeWeight(key);
+			inf+=graph.getEdgeWeight((DirectedEdge) key);
 		}
 		return inf;
 	}
@@ -128,16 +128,16 @@ public abstract class Graphs
 	}
 	/**
 	 * This method minimalPathCost returns a matrix of 
-	 * the form <code>Integer[numNodes][numNodes]</code> 
-	 * where the entry Integer[i][j] is the cost of the 
-	 * path between node i and node j having minimal cost
+	 * the form <code>Double[numNodes][numNodes]</code> 
+	 * where the entry <code>Double[i][j]</code> is the cost of the 
+	 * path between node <code>i</code> and node <code>j</code> having minimal cost
 	 * among all possible paths.
 	 * @param graph a directed graph with costs assigned to edges
-	 * @return a matrix Integer[i][j] that stores the cost 
-	 * of the path between node i and node j having minimal cost
+	 * @return a matrix <code>Double[i][j]</code> that stores the cost 
+	 * of the path between node <code>i</code> and node <code>j</code> having minimal cost
 	 * among all possible paths.
 	 */
-	public static Double[][] minimalPathCost(DirectedWeightedGraph graph)
+	public static Double[][] minimalPathCostFloyd(DirectedWeightedGraph graph)
 	{
 		int size = graph.size();
 		Double[][] costMatrix = new Double[size][size];
@@ -162,6 +162,11 @@ public abstract class Graphs
 		for (int node = 0; node < size; node++) 
 		{
 			floydMatrix = FloydMatrix(node,floydMatrix);
+			for (int k = 0; k < size; k++) 
+			{
+				if (floydMatrix[k][k] < 0)
+					throw new IllegalGraphException("graph contains a negative cycle");
+			}
 		}
 		return floydMatrix;
 	}

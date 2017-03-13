@@ -1,60 +1,63 @@
 package graphpractice;
 import java.util.*;
 
-public class DirectedGraph {
-	
-	private ArrayList<Vertex> vertices;
-	
-	public DirectedGraph(){
-		vertices = new ArrayList<Vertex>();
-	};
-	
-	public DirectedGraph(ArrayList<Vertex> vertices){
-		vertices = new ArrayList<Vertex>();
-		for (Vertex v : vertices)
-			this.add(v);
-	};
-	public int size()
+public class DirectedGraph extends Graph
+{
+	Set<Edge> edges;
+
+	public DirectedGraph()
 	{
-		return vertices.size();
+		super();
+		edges = super.edges;
+		vertices = super.vertices;
+		
+	}
+	public DirectedGraph(ArrayList<Vertex> vertices)
+	{
+		super(vertices);
+		edges = super.edges;
+		vertices = super.vertices;
 	}
 	
-	public ArrayList<Vertex> getVertices()
+	public Set<Vertex> getAdjacentVertices(Vertex v)
 	{
-		ArrayList<Vertex> verticesCopy = new ArrayList<Vertex>();
-		for (Vertex v : vertices)
-			verticesCopy.add(v);
-		return verticesCopy;
-	}
-	
-	public boolean contains(Object o)
-	{
-		return vertices.contains(o);
-	}
-	
-	public void add(Vertex newVertex) 
-	{
-		if (!vertices.contains(newVertex))
-			vertices.add(newVertex);
-	}
-	public void remove(Vertex vertex) 
-	{
-		if (vertices.contains(vertex))
-			vertices.remove(vertex);
-	}
-	public Vertex getVertex(int index)
-	{
-		return vertices.get(index);
-	}
-	public boolean validateEdges()
-	{
-		for (Vertex someVertex : vertices)
+		Set<Vertex> adjacentVertices = new HashSet<Vertex>();
+		for (Edge edge : edges)
 		{
-			Set<Vertex> adjacentVertices = someVertex.getAdjacent();
-			for (Vertex ref : adjacentVertices)
-				if (!vertices.contains(ref))
-					return false;
+			DirectedEdge dEdge = (DirectedEdge) edge;
+			if (dEdge.getInitial() == v)
+				adjacentVertices.add(dEdge.getTerminal());
 		}
-		return true;
+		return adjacentVertices;
+	}
+	
+	public Edge addEdge(Vertex initial, Vertex terminal)
+	{
+		if (!vertices.contains(initial))
+			throw new IllegalArgumentException();
+		if (!vertices.contains(terminal))
+			throw new IllegalArgumentException();
+		DirectedEdge edge = new DirectedEdge(initial,terminal);
+		if (edges.contains(edge))
+			return null;
+		edges.add(edge);
+		return edge;
+	}
+	
+	
+	public Edge addEdge(DirectedEdge edge)
+	{
+		return addEdge(edge.getInitial(),edge.getTerminal());
+	}
+	public Set<Edge> getAdjacentEdges(Vertex v)
+	{
+		
+		Set<Edge> adjEdges = new HashSet<>();
+		for (Edge edge : edges)
+		{
+			if (edge.getLeft() == v )
+				adjEdges.add(edge);
+		}
+		return adjEdges;
 	}
 }

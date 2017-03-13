@@ -13,45 +13,33 @@ public class DirectedWeightedGraph extends DirectedGraph
 	}
 	
 	public DirectedWeightedGraph(ArrayList<Vertex> vertices){
-		super();
+		super(vertices);
 		edgeWeights = new HashMap<>();
-		for (Vertex v : vertices)
-			this.add(v);
+
 	};
 	
-	public Set<DirectedEdge> getEdges()
+	public void setEdgeWeight(DirectedEdge edge, Double weight)
 	{
-		return edgeWeights.keySet();
-	}
-	
-	/**
-	 * Adds a new vertex to the graph.  Any existing
-	 * adjacency information contained in the vertex
-	 * will be cleared.  Adjacency information should
-	 * be added using the <code>addDirectedEdge</code>
-	 * method.
-	 * @param newVertex the new vertex to be added
-	 */
-	public void add(Vertex newVertex) 
-	{
-		super.add(newVertex);
-		Set<Vertex> adjacentVertices = newVertex.getAdjacent();
-		for (Vertex v : adjacentVertices)
-			newVertex.removeAdjacent(v);
-	}
-	
-	public void addDirectedEdge(DirectedEdge edge, Double weight)
-	{
-		if (!this.contains(edge.initial))
-			throw new IllegalArgumentException();
-		if (!this.contains(edge.terminal))
+		
+		if (!super.edges.contains(edge))
 			throw new IllegalArgumentException();
 		edgeWeights.put(edge,weight);
-		edge.initial.addAdjacent(edge.terminal);
 	}
 	public Double getEdgeWeight(DirectedEdge edge)
 	{
 		return edgeWeights.get(edge);
+	}
+	public Edge addEdge(Vertex initial, Vertex terminal, double weight)
+	{
+		Edge edge = super.addEdge(initial, terminal);
+		edgeWeights.put((DirectedEdge)edge, weight);
+		return edge;
+	}
+	public Edge addEdge(DirectedEdge edge, double weight)
+	{
+		super.addEdge(edge.getInitial(), edge.getTerminal());
+		edgeWeights.put((DirectedEdge)edge, weight);
+		return edge;
 	}
 
 }

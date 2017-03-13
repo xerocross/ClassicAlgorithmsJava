@@ -27,14 +27,14 @@ public class Vertex
 		this.name = name;
 	}
 	
-	public void addAdjacent(Vertex o)
+	private void addAdjacent(Vertex o)
 	{
 		if (adjacentVertices.contains(o))
 			return;
 		else
 			adjacentVertices.add(o);
 	}
-	public void removeAdjacent(Vertex o)
+	private void removeAdjacent(Vertex o)
 	{
 		if (adjacentVertices.contains(o))
 			adjacentVertices.remove(o);
