@@ -44,4 +44,8 @@ public class Edge
 	{
 		return (this.left.hashCode()/2) + (this.right.hashCode()/2);
 	}
+	public String toString()
+	{
+		return "("+left + "," + right +")";
+	}
 }

@@ -24,5 +24,14 @@ public class UndirectedWeightedGraph extends Graph
 		else
 			return null;
 	}
-
+	public Double getSumEdgeWeights()
+	{
+		Double sum = 0.;
+		Set<Edge> keys = edgeWeights.keySet();
+		for (Edge edge : keys)
+		{
+			sum+=edgeWeights.get(edge);
+		}
+		return sum;
+	}
 }
