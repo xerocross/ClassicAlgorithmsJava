@@ -8,6 +8,17 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The class WeightedGraph is a replacement
+ * for the previous UndirectedWeightedGraph.
+ * It represents a graph of weighted, undirected
+ * edges among its vertices.
+ * This class is an amateur attempt written
+ * for practice.  It is not intended for
+ * production use.
+ * @author Adam Cross
+ *
+ */
 public class WeightedGraph 
 {
 	ArrayList<Vertex> vertices;
