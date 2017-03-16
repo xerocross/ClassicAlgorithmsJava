@@ -36,6 +36,10 @@ public class PriorityQueue<E extends Comparable<E>>
     {
         heap = new ArrayList<>();
     }
+    E get(int index)
+    {
+    		return heap.get(index);
+    }
     
     public int size()
     {
@@ -97,8 +101,14 @@ public class PriorityQueue<E extends Comparable<E>>
     		int maxElt = heap.size() - 1;
         return getParentIndex(maxElt);
     }
-    private int leftChildIndex(int heapIndex) {return 2*heapIndex+1;}
-    private int rightChildIndex(int heapIndex) {return 2*heapIndex+2;}
+    int leftChildIndex(int heapIndex) 
+    {
+    		return 2*heapIndex + 1;
+    	}
+    int rightChildIndex(int heapIndex) 
+    {
+    		return 2*heapIndex + 2;
+    	}
     private void reHeap(int heapIndex)
     {
         int leftChildIndex = leftChildIndex(heapIndex);
@@ -111,9 +121,7 @@ public class PriorityQueue<E extends Comparable<E>>
         			swapHeapElementsByIndex(heapIndex, leftChildIndex);
         		return;
         }
-        
         int indexOfMin = getMinOfThree(heapIndex, leftChildIndex, rightChildIndex);
-        
         if (indexOfMin != heapIndex)
         {
             swapHeapElementsByIndex(heapIndex, indexOfMin);
@@ -144,10 +152,10 @@ public class PriorityQueue<E extends Comparable<E>>
     {
         if (eltIndex <= 0)
             return;
-        int parentIndex = getParentIndex(eltIndex);
+        Integer parentIndex = getParentIndex(eltIndex);
         E base = heap.get(eltIndex);
         E parent = heap.get(parentIndex);
-        if (base.compareTo(parent) < 0) 
+        if (base.compareTo(parent) < 0)
         {
             swapHeapElementsByIndex(eltIndex,parentIndex);
             bubbleUp(parentIndex);
