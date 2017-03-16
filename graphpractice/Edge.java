@@ -48,4 +48,13 @@ public class Edge
 	{
 		return "("+left + "," + right +")";
 	}
+	public Vertex getOtherSide(Vertex v)
+	{
+		if (this.left.equals(v))
+			return this.right;
+		else if (this.right.equals(v))
+			return this.left;
+		else
+			return null;
+	}
 }
