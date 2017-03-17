@@ -201,4 +201,14 @@ public class WeightedGraph
 		WeightedEdge edge = getEdge(vA,vB);
 		return edge.getWeight();
 	}
+	public Double getSumEdgeWeights()
+	{
+		Double sumWeight = 0.;
+		Set<WeightedEdge> edges = getRealEdges();
+		for (WeightedEdge edge : edges)
+		{
+			sumWeight+=edge.getWeight();
+		}
+		return sumWeight;
+	}
 }
