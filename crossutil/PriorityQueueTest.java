@@ -1,4 +1,4 @@
-package graphpractice;
+package crossutil;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;

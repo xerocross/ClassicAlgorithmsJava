@@ -1,4 +1,4 @@
-package graphpractice;
+package crossutil;
 
 import java.util.*;
 
