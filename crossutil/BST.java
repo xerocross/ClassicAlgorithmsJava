@@ -1,9 +1,13 @@
 package crossutil;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 // binary search tree
 public class BST<Key extends Comparable<Key>, Value>
 {
 	Node root;
+
 	class Node
 	{
 		public Node left;
@@ -42,11 +46,12 @@ public class BST<Key extends Comparable<Key>, Value>
 	}
 	public boolean isEmpty()
 	{
-		return false;
+		return (this.size() == 0) ? true : false;
 	}
 	public Iterable<Key> keys()
 	{
-		return null;
+		ArrayDeque<Key> iterable = new ArrayDeque<>();
+		return (root == null) ? iterable : generateIterable(root, iterable);
 	}
 
 	private Node put(Node node, Key key, Value val)
@@ -67,7 +72,6 @@ public class BST<Key extends Comparable<Key>, Value>
 				+ (node.right == null ? 0 : node.right.size) 
 				+ 1;
 		return node;
-		
 	}
 	private Node get(Node node, Key key)
 	{
@@ -80,5 +84,14 @@ public class BST<Key extends Comparable<Key>, Value>
 			return get(node.left, key);
 		else
 			return node;
+	}
+	private Queue<Key> generateIterable(Node node, Queue<Key> queue)
+	{
+		queue.offer(node.key);
+		if (node.left != null)
+			generateIterable(node.left, queue);
+		if (node.right!= null)
+			generateIterable(node.right, queue);
+		return queue;
 	}
 }
