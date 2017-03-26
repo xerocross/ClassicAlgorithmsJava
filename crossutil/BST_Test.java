@@ -1,6 +1,11 @@
 package crossutil;
 
 import static org.junit.Assert.*;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.junit.Test;
 
 public class BST_Test {
@@ -75,6 +80,34 @@ public class BST_Test {
 		bst.put(37, 37);
 		bst.put(31, 31);
 		assertTrue(bst.contains(31));
+		assertTrue(bst.contains(20));
+		assertTrue(bst.contains(15));
+		assertTrue(bst.contains(27));
+		assertTrue(bst.contains(11));
+		assertTrue(bst.contains(37));
 		assertFalse(bst.contains(9));
+		assertFalse(bst.contains(12));
+	}
+	@Test
+	public void keysTest()
+	{
+		BST<Integer, Integer> bst = new BST<>();
+		Set<Integer> inputs = new HashSet<>();
+		inputs.add(20);
+		inputs.add(15);
+		inputs.add(27);
+		inputs.add(15);
+		inputs.add(27);
+		inputs.add(11);
+		inputs.add(37);
+		for (Integer i : inputs)
+			bst.put(i, i);
+		Iterable<Integer> it = bst.keys();
+		Iterator<Integer> itr = it.iterator();
+		while (itr.hasNext())
+		{
+			assertTrue(inputs.contains(itr.next()));
+		}
+		
 	}
 }
