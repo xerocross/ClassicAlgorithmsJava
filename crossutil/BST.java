@@ -10,8 +10,10 @@ public class BST<Key extends Comparable<Key>, Value>
 		public Node right;
 		public Key key;
 		public Value val;
+		public int size;
 		public Node(Key key, Value val)
 		{
+			this.size = 1;
 			this.key = key;
 			this.val = val;
 		}
@@ -32,11 +34,11 @@ public class BST<Key extends Comparable<Key>, Value>
 	}
 	public boolean contains(Key key)
 	{
-		return false;
+		return (get(root, key) == null ? false : true);
 	}
 	public int size()
 	{
-		return 0;
+		return (root == null) ? 0 : root.size;
 	}
 	public boolean isEmpty()
 	{
@@ -49,7 +51,7 @@ public class BST<Key extends Comparable<Key>, Value>
 
 	private Node put(Node node, Key key, Value val)
 	{
-		if (node == null)
+		if (node == null) 
 			return new Node(key, val);
 		int comp = node.key.compareTo(key);
 		if (comp < 0) // node.key < key
@@ -61,7 +63,11 @@ public class BST<Key extends Comparable<Key>, Value>
 		else {
 			node.val = val;
 		}
+		node.size = (node.left == null ? 0 : node.left.size) 
+				+ (node.right == null ? 0 : node.right.size) 
+				+ 1;
 		return node;
+		
 	}
 	private Node get(Node node, Key key)
 	{
