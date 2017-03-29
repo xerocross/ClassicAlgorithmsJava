@@ -225,4 +225,18 @@ public class QuicksortTest
 			assertTrue(isSorted);
 		}
 	}
+	@Test
+	public void sortTestforList()
+	{
+		int numRounds = 40;
+		for (int i = 0; i < numRounds; i++)
+		{
+			List<Integer> list = Arrays.randomIntegerArrayList(15+11*i, 100+20*i);
+			System.out.println(list);
+			Quicksort.sort(list);
+			boolean isSorted = Arrays.isSorted(list);
+			System.out.println(list);
+			assertTrue(isSorted);
+		}
+	}
 }

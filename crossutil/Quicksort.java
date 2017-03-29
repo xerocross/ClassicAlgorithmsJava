@@ -1,6 +1,5 @@
 package crossutil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +15,9 @@ public abstract class Quicksort
 		}
 		public synchronized List<T> sort(List<T> list)
 		{
-			return null;
+			this.list = list;
+			partitionRecursive(0, list.size());
+			return list;
 		}
 		public synchronized List<T> sort(T[] array)
 		{
@@ -98,13 +99,13 @@ public abstract class Quicksort
 		{
 			swap(p.left,p.right);
 		}
-		private void swap(int i, int j)
+		void swap(int i, int j)
 		{
 			T placeholder = list.get(i);
 			list.set(i, list.get(j));
 			list.set(j, placeholder);
 		}
-		private Pair<T> pivotToFinalPosition(Pair<T> pivot,  int leftBound, int rightBound)
+		Pair<T> pivotToFinalPosition(Pair<T> pivot,  int leftBound, int rightBound)
 		{
 			boolean pivotIsTooFarLeft = (pivot.index < leftBound);
 			boolean pivotIsTooFarRight = (pivot.index > rightBound);
@@ -140,11 +141,12 @@ public abstract class Quicksort
 			return this.value.compareTo(o.value);
 		}
 	}
-	public  static  synchronized <T extends Comparable<T>> List<T> quicksort(List<T> list)
+	public  static  synchronized <T extends Comparable<T>> List<T> sort(List<T> list)
 	{
 		QuickSorter<T> sorter = new QuickSorter<>();
 		return sorter.sort(list);
 	}
+
 	static <T extends Comparable<T>> void insertionSort(List<T> list, int beginIndex, int endIndex)
 	{
 		if (endIndex - beginIndex <= 1)
