@@ -1,6 +1,10 @@
-package sortpractice;
+package crossutil;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import sortpractice.BinaryHeap;
 
 public abstract class Arrays {
 
@@ -152,7 +156,70 @@ public abstract class Arrays {
 		
 		return arr;
 	}
+	public static <E extends Comparable<E>> boolean isSorted(List<E> arr)
+	{
+		int len = arr.size();
+		int antemax = len - 1;
+		for (int i = 0; i < antemax; i++) 
+		{
+			if (arr.get(i).compareTo(arr.get(i+1)) > 0 )
+				return false;
+		}
+		return true;
+	}
+	private static Integer[] shuffle(Integer[] array)
+	{
+		int len, half, frontLen, backLen;
+		len = array.length;
+		half = len/2;
+		List<Integer> list = java.util.Arrays.asList(array);
+		List<Integer> frontHalf = list.subList(0, half);
+		frontLen = frontHalf.size();
+		List<Integer> backHalf = list.subList(half, len);
+		backLen = backHalf.size();
+		Integer[] newArray = new Integer[len];
+		int index = 0;
+		for (int i = 0; i < half; i++)
+		{
+			
+			newArray[index++] = frontHalf.get(i);
+			System.out.println(frontHalf.get(i));
+			newArray[index++] = backHalf.get(i);
+			System.out.println(backHalf.get(i));
+		}
+		if (len % 2 == 1)
+			newArray[index] = backHalf.get(half);
+		for (int i = 0; i < len; i++)
+			array[i] = newArray[(half + i) % len];
+		
+		return array;
+	}
 	
+	public static <T> List<T> asList(T[] array)
+	{
+		int len = array.length;
+		List<T> list = new ArrayList<>(len);
+		for (int i = 0; i < len; i++)
+		{
+			list.add(array[i]);
+		}
+		return list;
+	}
 	
+	public static Integer[] getPermutation(int length)
+	{
+		Integer permutation[] = new Integer[length];
+		for (int i = 0; i < length; i++)
+			permutation[i] = i;
+		Random rand = new Random();
+		int m = length - 1;
+		int numShuffle = 7*length;
+		for (int i = 0; i < length; i++)
+		{
+			permutation = shuffle(permutation);
+
+		}
+		return permutation;
+	}
 	
 }
