@@ -10,8 +10,6 @@ public abstract class Quicksort
 	static class QuickSorter<T extends Comparable<T>>
 	{
 		List<T> list;
-		Pair<T> pivot;
-		IndexPair inversionPair;
 		
 		public QuickSorter()
 		{
@@ -39,8 +37,24 @@ public abstract class Quicksort
 			if (pivotLowerBound >= pivotUpperBound)
 				throw new RuntimeException();
 			pivot = pivotToFinalPosition(pivot, pivotLowerBound, pivotUpperBound);
-			System.out.println(list);
 			return pivot;
+		}
+		
+		void partitionRecursive(int beginIndex, int endIndex)
+		{
+			int length = endIndex - beginIndex;
+			if (length <= 10)
+			{
+				insertionSort(list, beginIndex, endIndex);
+				return;
+			}
+			Pair<T> pivot = partition(beginIndex, endIndex);
+			
+			int partitionIndex = pivot.index;
+			if (partitionIndex > beginIndex)
+				partitionRecursive(beginIndex, partitionIndex);
+			if (endIndex > partitionIndex )
+				partitionRecursive(partitionIndex + 1, endIndex);
 		}
 		
 		Pair<T> getPivot(int beginIndex, int endIndex)
@@ -64,14 +78,12 @@ public abstract class Quicksort
 			int leftIndex, rightIndex;
 			if (inversionPair == null)
 			{
-				System.out.println("null");
 				leftIndex = startIndex;
 				rightIndex = endIndex - 1;
 			} else {
 				leftIndex = inversionPair.left;
 				rightIndex = inversionPair.right - 1;
 			}
-			System.out.format("before: leftIndex %s, rightIndex %s%n",leftIndex, rightIndex );
 			int lowerBound = startIndex - 1;
 			int upperBound = endIndex;
 			
@@ -80,15 +92,11 @@ public abstract class Quicksort
 			while (rightIndex > lowerBound && list.get(rightIndex).compareTo(pivot.value) >= 0)
 				rightIndex--;
 			IndexPair nextInversionPair = new IndexPair(leftIndex, rightIndex);
-			System.out.format("next inversionPair: %s , %s%n", nextInversionPair.left, nextInversionPair.right);
-			//this.inversionPair = inversionPair;
 			return nextInversionPair;
 		}
 		void swap(IndexPair p)
 		{
-			T placeholder = list.get(p.left);
-			list.set(p.left, list.get(p.right));
-			list.set(p.right, placeholder);
+			swap(p.left,p.right);
 		}
 		private void swap(int i, int j)
 		{
@@ -107,8 +115,9 @@ public abstract class Quicksort
 			{
 				swap(pivot.index,rightBound);
 				return new Pair<T>(rightBound, pivot.value);
-			} else 
-				throw new RuntimeException();
+			} else {
+				return pivot;
+			}
 		}
 	}
 	
@@ -179,5 +188,4 @@ public abstract class Quicksort
 				return false;
 		}
 	}
-
 }

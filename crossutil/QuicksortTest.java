@@ -5,7 +5,6 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 import crossutil.Quicksort.Pair;
 import crossutil.Quicksort.QuickSorter;
-import crossutil.Quicksort.IndexPair;
 
 import java.util.List;
 
@@ -79,15 +78,6 @@ public class QuicksortTest
 		sorter.list = list;
 		assertTrue(sorter.getPivot(0,1).value == 26);
 	}
-	@Test
-	public void inversionPairInitiallyNull()
-	{
-		List<Integer> list = java.util.Arrays.asList(new Integer[] {26, 16});
-		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
-		sorter.list = list;
-		boolean inversionPairIsInitiallyNull = (sorter.inversionPair == null);
-		assertTrue(inversionPairIsInitiallyNull);
-	}
 	
 	@Test
 	public void getNextInversionPairTest()
@@ -97,8 +87,6 @@ public class QuicksortTest
 		System.out.println(list);
 		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
 		sorter.list = list;
-		boolean inversionPairIsInitiallyNull = (sorter.inversionPair == null);
-		assertTrue(inversionPairIsInitiallyNull);
 		Pair<Integer> pivot = new Pair<Integer>(9,45);
 		Quicksort.IndexPair invPair;
 		invPair = null;
@@ -139,7 +127,6 @@ public class QuicksortTest
 		pivot = sorter.getPivot(0, cutIndex);
 		//pivot is 53, occurs at index 3
 		invPair = null;
-		sorter.pivot = pivot;
 		invPair = sorter.getNextInversionPair(invPair, 0, cutIndex, pivot);
 		System.out.format("found invPair: %s , %s%n", invPair.left, invPair.right);
 		
@@ -147,7 +134,6 @@ public class QuicksortTest
 		assertTrue(invPair.right == 6);
 		
 		pivot = sorter.getPivot(cutIndex, list.size());
-		sorter.pivot = pivot;
 		System.out.println("pivot value: " + pivot.value);
 		//pivot is 50, occurs at index 14
 		invPair = null;
@@ -174,7 +160,6 @@ public class QuicksortTest
 		System.out.println("pivot value: " + pivot.value);
 		//pivot is 33 at 11
 		invPair = null;
-		sorter.pivot = pivot;
 		invPair = sorter.getNextInversionPair(invPair, startIndex, endIndex, pivot);
 		// 7, 13
 		sorter.swap(invPair);
@@ -220,5 +205,24 @@ public class QuicksortTest
 		System.out.println(list);
 		System.out.println("pivot value: "+  pivot.value);
 		assertTrue(isPartitioned);
+	}
+	
+	@Test
+	public void partitionRecursiveTest()
+	{
+		int numRounds = 40;
+		for (int i = 0; i < numRounds; i++)
+		{
+			List<Integer> list = Arrays.randomIntegerArrayList(15+10*i, 100+20*i);
+			System.out.println(list);
+			Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
+			sorter.list = list;
+			int startIndex = 0;
+			int endIndex = list.size();
+			sorter.partitionRecursive(startIndex, endIndex);
+			boolean isSorted = Arrays.isSorted(list);
+			System.out.println(list);
+			assertTrue(isSorted);
+		}
 	}
 }
