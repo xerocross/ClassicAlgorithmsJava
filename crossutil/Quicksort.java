@@ -15,7 +15,6 @@ public abstract class Quicksort
 		public QuickSorter()
 		{
 		}
-		
 		public synchronized List<T> sort(List<T> list)
 		{
 			return null;
@@ -45,10 +44,29 @@ public abstract class Quicksort
 			return this.value.compareTo(o.value);
 		}
 	}
-	
 	public  static  synchronized <T extends Comparable<T>> List<T> quicksort(List<T> list)
 	{
 		QuickSorter<T> sorter = new QuickSorter<>();
 		return sorter.sort(list);
+	}
+	static <T extends Comparable<T>> void insertionSort(List<T> list, int beginIndex, int endIndex)
+	{
+		if (endIndex - beginIndex <= 1)
+			return;
+		int maxIndex = endIndex - 1;
+		for(int partition = beginIndex; partition < maxIndex; partition++)
+		{
+			T sortElement = list.get(partition + 1);
+			int testIndex = partition;
+			while (testIndex >= beginIndex && list.get(testIndex).compareTo(sortElement) > 0)
+				list.set(testIndex + 1 , list.get(testIndex--));
+			list.set(++testIndex, sortElement);
+		}
+	}
+	static <U extends Comparable<U>> U getMedianOf(U a, U b, U c)
+	{
+		List<U> threeSortables = Arrays.asList(a, b, c);
+		insertionSort(threeSortables, 0, 3);
+		return threeSortables.get(1);
 	}
 }
