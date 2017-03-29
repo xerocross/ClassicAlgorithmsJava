@@ -11,6 +11,7 @@ public abstract class Quicksort
 	{
 		List<T> list;
 		Pair<T> pivot;
+		IndexPair inversionPair;
 		
 		public QuickSorter()
 		{
@@ -38,6 +39,38 @@ public abstract class Quicksort
 				return getMedianOf(first,middle,last);
 			}
 		}
+		
+		IndexPair getNextInversionPair(IndexPair inversionPair, int startIndex, int endIndex, Pair<T> pivot)
+		{
+			int leftIndex, rightIndex;
+			if (inversionPair == null)
+			{
+				System.out.println("null");
+				leftIndex = startIndex;
+				rightIndex = endIndex - 1;
+			} else {
+				leftIndex = inversionPair.left;
+				rightIndex = inversionPair.right - 1;
+			}
+			System.out.format("before: leftIndex %s, rightIndex %s%n",leftIndex, rightIndex );
+			int lowerBound = startIndex - 1, upperBound = endIndex;
+			
+			while (leftIndex < upperBound && list.get(leftIndex).compareTo(pivot.value) <= 0)
+				leftIndex++;
+			while (rightIndex > lowerBound && list.get(rightIndex).compareTo(pivot.value) >= 0)
+				rightIndex--;
+			IndexPair nextInversionPair = new IndexPair(leftIndex, rightIndex);
+			System.out.format("next inversionPair: %s , %s%n", nextInversionPair.left, nextInversionPair.right);
+			//this.inversionPair = inversionPair;
+			return nextInversionPair;
+		}
+		void swap(IndexPair p)
+		{
+			T placeholder = list.get(p.left);
+			list.set(p.left, list.get(p.right));
+			list.set(p.right, placeholder);
+		}
+		
 	}
 	
 	static class Pair<T extends Comparable<T>> implements Comparable<Pair<T>>
@@ -84,4 +117,28 @@ public abstract class Quicksort
 		insertionSort(threeSortables, 0, 3);
 		return threeSortables.get(1);
 	}
+	
+	static class IndexPair
+	{
+		int left;
+		int right;
+		public IndexPair(int left, int right)
+		{
+			this.left = left;
+			this.right = right;
+		}
+		public boolean equals(Object o)
+		{
+			if (o == null)
+				return false;
+			else if (o instanceof Quicksort.IndexPair)
+			{
+				Quicksort.IndexPair that = (Quicksort.IndexPair) o;
+				return (left == that.left && right == that.right);
+				
+			} else
+				return false;
+		}
+	}
+
 }
