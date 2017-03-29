@@ -24,6 +24,25 @@ public abstract class Quicksort
 		{
 			return null;
 		}
+		
+		synchronized Pair<T> partition(int beginIndex, int endIndex)
+		{
+			Pair<T> pivot = getPivot(beginIndex, endIndex);
+			IndexPair invPair = getNextInversionPair(null, beginIndex, endIndex, pivot);
+			while (invPair.left < invPair.right)
+			{
+				swap(invPair);
+				invPair = getNextInversionPair(invPair, beginIndex, endIndex, pivot );
+			}
+			int pivotLowerBound = invPair.right;
+			int pivotUpperBound = invPair.left;
+			if (pivotLowerBound >= pivotUpperBound)
+				throw new RuntimeException();
+			pivot = pivotToFinalPosition(pivot, pivotLowerBound, pivotUpperBound);
+			System.out.println(list);
+			return pivot;
+		}
+		
 		Pair<T> getPivot(int beginIndex, int endIndex)
 		{
 			int length = endIndex - beginIndex;
@@ -53,7 +72,8 @@ public abstract class Quicksort
 				rightIndex = inversionPair.right - 1;
 			}
 			System.out.format("before: leftIndex %s, rightIndex %s%n",leftIndex, rightIndex );
-			int lowerBound = startIndex - 1, upperBound = endIndex;
+			int lowerBound = startIndex - 1;
+			int upperBound = endIndex;
 			
 			while (leftIndex < upperBound && list.get(leftIndex).compareTo(pivot.value) <= 0)
 				leftIndex++;
@@ -70,7 +90,26 @@ public abstract class Quicksort
 			list.set(p.left, list.get(p.right));
 			list.set(p.right, placeholder);
 		}
-		
+		private void swap(int i, int j)
+		{
+			T placeholder = list.get(i);
+			list.set(i, list.get(j));
+			list.set(j, placeholder);
+		}
+		private Pair<T> pivotToFinalPosition(Pair<T> pivot,  int leftBound, int rightBound)
+		{
+			boolean pivotIsTooFarLeft = (pivot.index < leftBound);
+			boolean pivotIsTooFarRight = (pivot.index > rightBound);
+			if (pivotIsTooFarLeft) {
+				swap(pivot.index,leftBound);
+				return new Pair<T>(leftBound, pivot.value);
+			} else if (pivotIsTooFarRight)
+			{
+				swap(pivot.index,rightBound);
+				return new Pair<T>(rightBound, pivot.value);
+			} else 
+				throw new RuntimeException();
+		}
 	}
 	
 	static class Pair<T extends Comparable<T>> implements Comparable<Pair<T>>

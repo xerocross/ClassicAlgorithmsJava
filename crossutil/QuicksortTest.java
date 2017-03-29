@@ -185,4 +185,40 @@ public class QuicksortTest
 		assertTrue(invPair.equals(expectedPair));
 		System.out.format("found invPair: %s , %s%n", invPair.left, invPair.right);
 	}
+
+	private boolean isPartitioned(List<Integer> list, Pair<Integer> pivot, int startIndex, int endIndex)
+	{
+		for (int i = startIndex; i < pivot.index; i++)
+		{
+			if (list.get(i) > pivot.value)
+			{
+				return false;
+			}
+		}
+		for (int i = pivot.index; i < endIndex; i++)
+		{
+			if (list.get(i) < pivot.value)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	@Test
+	public void partitionTest()
+	{
+		List<Integer> list = Arrays.randomIntegerArrayList(15, 100);
+		System.out.println(list);
+		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
+		sorter.list = list;
+		int startIndex = 0, endIndex = list.size();
+		Pair<Integer> pivot;
+		pivot = sorter.partition(startIndex, endIndex);
+		boolean isPartitioned = isPartitioned(list, pivot, startIndex, endIndex);
+		System.out.println(list);
+		System.out.println("pivot value: "+  pivot.value);
+		assertTrue(isPartitioned);
+	}
 }
