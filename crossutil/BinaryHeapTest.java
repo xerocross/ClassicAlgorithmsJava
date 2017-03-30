@@ -4,32 +4,17 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import sortpractice.BinaryHeaps;
-
 import java.util.ArrayList;
 
 
 public class BinaryHeapTest {
-
-	
-	
-	
-	
-	
-	
-	@Test
+@Test
 	public void binaryHeapConstructorShouldWork() {
 		ArrayList<Integer> arr = Arrays.randomIntegerArrayList(20, 30);
 		
 		BinaryHeap<Integer> heap = new BinaryHeap<>(arr);
 		assertTrue(!(heap == null));
-		
 	}
-	
-
-	
-	
-	
 	@Test
 	public void heapifyMethodShouldHeapify()
 	{
@@ -44,7 +29,6 @@ public class BinaryHeapTest {
 			System.out.println(heap);
 			int size = heap.size();
 			heap.heapify(0, size);
-	
 			assertTrue(BinaryHeaps.isHeap(heap));
 			System.out.println(heap);	
 		}
