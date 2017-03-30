@@ -20,7 +20,10 @@ public class Edge
 	{
 		return right;
 	}
-	
+	public boolean contains(Vertex v)
+	{
+		return (left == v || right == v);
+	}
 	public Edge(Vertex left, Vertex right)
 	{
 		this.left = left;
