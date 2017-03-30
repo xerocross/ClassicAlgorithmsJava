@@ -3,12 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import sortpractice.BinaryHeap;
-
 public abstract class Arrays {
-
-	
 	public static ArrayList<Integer> randomIntegerArrayList(int size, int max)
 	{
 		ArrayList<Integer> arr = new ArrayList<>(size);
