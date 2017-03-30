@@ -1,5 +1,6 @@
 package graphpractice;
 
+@SuppressWarnings("serial")
 public class IllegalGraphException extends IllegalArgumentException 
 {
 

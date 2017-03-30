@@ -1,39 +1,21 @@
 package graphpractice;
 
 import static org.junit.Assert.*;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import org.junit.Test;
+
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class GraphsTest {
+public class TopSortTest {
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	@Test
-	public void edgeEqualityTest()
-	{
-		int numVertices = 2;
-		Vertex[] vertices = new Vertex[numVertices];
-		for (int i = 0; i < numVertices; i++)
-		{
-			vertices[i] = new Vertex(Integer.toString(i));
-		}
-		DirectedEdge edge1 = new DirectedEdge(vertices[0],vertices[1]);
-		DirectedEdge edge1copy = new DirectedEdge(vertices[0],vertices[1]);
-		assertTrue(edge1.equals(edge1copy));
-		Set<DirectedEdge> edges = new HashSet<>();
-		edges.add(edge1);
-		assertTrue(edges.contains(edge1copy));
-	}
 	
 	@Test
 	public void topSortTest() 
@@ -66,7 +48,7 @@ public class GraphsTest {
 			dg.addEdge(someEdge);
 			System.out.println("An edge was created: "+ initial + "->" + terminal);
 		}
-		ArrayList<Vertex> topSortedList = Graphs.topSort(dg);
+		ArrayList<Vertex> topSortedList = TopSort.topSort(dg);
 		int maxIndex = numVertices - 1;
 		System.out.println("top-sorted list:");
 		for (int i = 0; i < maxIndex; i++)
@@ -77,10 +59,7 @@ public class GraphsTest {
 			assertTrue(topSortedList.indexOf(edge.getInitial()) < topSortedList.indexOf(edge.getTerminal()));
 		}
 	}
-	
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-	
+
 	@Test
 	public void topSortGraphWithCyclesShouldThrowException() throws IllegalArgumentException
 	{
@@ -98,10 +77,6 @@ public class GraphsTest {
 		dg.addEdge(vertices[2], vertices[3]);
 		dg.addEdge(vertices[3], vertices[1]);
 		thrown.expect(IllegalGraphException.class);
-		Graphs.topSort(dg);
+		TopSort.topSort(dg);
 	}
-	
-	
-	
-	
 }

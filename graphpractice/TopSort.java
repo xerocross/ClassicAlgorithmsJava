@@ -1,14 +1,11 @@
 package graphpractice;
-import java.util.*;
-/**
- * This class is for performing operations on
- * graph objects---notably using Floyd's algorithm
- * for finding the least-cost paths.  This was written
- * by an amateur for practice, and it is not intended
- * for production use.
- * @author Adam Cross
- *
- */
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 
 class VertexData
 {
@@ -23,15 +20,13 @@ class VertexData
 	}
 }
 
+public class TopSort {
 
-public abstract class Graphs 
-{
-	
 	public static ArrayList<Vertex> topSort(DirectedGraph graph)
 	{
 		ArrayList<VertexData> vertexDataList = buildVertexData(graph);
 		populateInVertices(graph, vertexDataList);
-		Stack<VertexData> readyVertices = new Stack<>();
+		ArrayDeque<VertexData> readyVertices = new ArrayDeque<>();
 		updateReadyStack(vertexDataList,readyVertices);
 		ArrayList<Vertex> topSortedList = new ArrayList<>();
 		while (!readyVertices.isEmpty())
@@ -48,53 +43,35 @@ public abstract class Graphs
 		return topSortedList;
 	}
 	
-	//this method used for top sort
-	static void updateReadyStack(ArrayList<VertexData> vertexDataList, Stack<VertexData> readyVertices)
+	static void updateReadyStack(ArrayList<VertexData> vertexDataList, ArrayDeque<VertexData> readyVertices)
 	{
-		Stack<VertexData> removeThese = new Stack<>();
+		ArrayDeque<VertexData> removeThese = new ArrayDeque<>();
 		for (VertexData vDat : vertexDataList)
-		{
 			if (vDat.inVertices.size() == 0)
 			{
 				readyVertices.push(vDat);
 				removeThese.push(vDat);
 			}
-		}
 		while(!removeThese.isEmpty())
 			vertexDataList.remove(removeThese.pop());
 	}
 	
 	
-	//this method used for top sort
 	private static ArrayList<VertexData> buildVertexData(DirectedGraph graph)
 	{
-		ArrayList<Vertex> vertices =  graph.getVertices();
-		ArrayList<VertexData> vertexDataList = new ArrayList<VertexData>();
-		for (Vertex v : vertices)
-		{
-			vertexDataList.add(new VertexData(v));
-		}
-		return vertexDataList;
+		return graph.getVertices().stream()
+			.map((v)->new VertexData(v))
+			.collect(Collectors.toCollection(()->new ArrayList<VertexData>()));
 	}
 	
-	//this method used for top sort
 	private static void populateInVertices(DirectedGraph g, ArrayList<VertexData> vertexDataList)
 	{
-		Set<Vertex> adjacentVerticies;
-		for (VertexData vDatOuter : vertexDataList)
-		{
-			for (VertexData vDatInner : vertexDataList)
-			{
-				if (vDatOuter == vDatInner) 
-				{
-					continue;
-				}
-				adjacentVerticies = g.getAdjacentVertices(vDatInner.vertex);
-				if (adjacentVerticies.contains(vDatOuter.vertex))
-				{ // the vDatInner vertex points to vDatOuter
-					vDatOuter.inVertices.add(vDatInner.vertex);
-				}
-			}
-		}
+		for (VertexData a : vertexDataList)
+			a.inVertices.addAll(
+					vertexDataList.stream()
+					.filter(b->g.isEdge(b.vertex,a.vertex))
+					.map(x->x.vertex)
+					.collect(Collectors.toList())
+			);
 	}
 }
