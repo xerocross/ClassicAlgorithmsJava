@@ -14,7 +14,7 @@ import java.util.*;
  * @author Adam Cross
  *
  */
-public abstract class MinSpanningTrees 
+public abstract class PrimsAlgorithm 
 {
 
 	// this method is O(|availableEdges|)
@@ -82,7 +82,7 @@ public abstract class MinSpanningTrees
 		 * vertex.
 		 */
 		Vertex current = graph.getAnyVertex();
-		WeightedGraph minSpanTree = new WeightedGraph();
+		WeightedGraph minSpanTree = new WeightedGraphAdj();
 		
 		minSpanTree.addVertex(current);
 		// O(|minSpanTree|)
