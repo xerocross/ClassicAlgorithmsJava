@@ -2,21 +2,22 @@ package graphpractice;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
-public class MinimalPathCost {
+public class FloydsAlgorithm {
 	
 	/**
-	 * @param a DirectedWeightedGraph with no negative cycles
+	 * @param a DWG with no negative cycles
 	 * @return a map <code>Map<Vertex,Map<Vertex,Double>></code> that stores 
 	 * for each pair of vertices (a, b) the minimal cost of a path from a
 	 * to b.
 	 */
-	public static Map<Vertex,Map<Vertex,Double>> minimalPathCost(DirectedWeightedGraph graph)
+	public static Map<Vertex,Map<Vertex,Double>> minimalPathCost(DWG graph)
 	{
 		int size = graph.size();
-		ArrayList<Vertex> vertices = graph.getVertexList();
+		List<Vertex> vertices = graph.getVertices();
 		Double[][] pathCost = buildCostMatrix(vertices,  graph);
 		// pathCost contains the costs of going
 		// directly from any vertex to any other
@@ -39,11 +40,11 @@ public class MinimalPathCost {
 	
 	/*
 	 * This final conversion is necessary because the 
-	 * DirectedWeightedGraph object does not index its
+	 * DWG object does not index its
 	 * vertices.  The indices used in this class are
 	 * meaningless outside this class.
 	 */
-	private static Map<Vertex,Map<Vertex,Double>> matrixToMap(ArrayList<Vertex> vertexList, Double[][] costMatrix)
+	private static Map<Vertex,Map<Vertex,Double>> matrixToMap(List<Vertex> vertexList, Double[][] costMatrix)
 	{
 		Map<Vertex,Map<Vertex,Double>> map = new HashMap<>();
 		int numRows = costMatrix.length;
@@ -58,7 +59,7 @@ public class MinimalPathCost {
 		return map;
 	}
 	
-	private static Double computeInfinity(DirectedWeightedGraph graph)
+	private static Double computeInfinity(DWG graph)
 	{
 		Double inf = 0.;
 		Set<Edge> keys = graph.getEdges();
@@ -86,7 +87,7 @@ public class MinimalPathCost {
 			}
 		return newPathCost;
 	}
-	private static Double[][] buildCostMatrix(ArrayList<Vertex> vertices, DirectedWeightedGraph graph)
+	private static Double[][] buildCostMatrix(List<Vertex> vertices, DWG graph)
 	{
 		int size = vertices.size();
 		Double[][] costMatrix = new Double[size][size];

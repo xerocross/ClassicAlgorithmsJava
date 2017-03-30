@@ -14,7 +14,7 @@ import org.junit.Rule;
 
 
 
-public class MinimalCostPathTest {
+public class FloydsAlgorithmTest {
 	ArrayList<Vertex> vertices;
 	
 	@Rule
@@ -195,7 +195,7 @@ public class MinimalCostPathTest {
 			}
 			System.out.println(highCostPath.get(length-1));
 		}
-		Map<Vertex,Map<Vertex,Double>> minCost = MinimalPathCost.minimalPathCost(dwg);
+		Map<Vertex,Map<Vertex,Double>> minCost = FloydsAlgorithm.minimalPathCost(dwg);
 		System.out.println("the graph has " + dwg.size() + " vertices");
 		System.out.println("the path is from vertex 0 to vertex " + maxPathIndex);
 		System.out.println("number of edges in graph: " + dwg.getEdges().size());
@@ -226,7 +226,7 @@ public class MinimalCostPathTest {
 		dwg.addEdge(vertices[3],vertices[1],-3.);
 		thrown.expect(IllegalGraphException.class);
 		thrown.expectMessage("graph contains a negative cycle");
-		MinimalPathCost.minimalPathCost(dwg);
+		FloydsAlgorithm.minimalPathCost(dwg);
 	}
 
 }
