@@ -1,9 +1,7 @@
 package graphpractice;
 
 // directed weighted graph
-public abstract class DWG extends DirectedGraph
+public interface DWG extends DirectedGraph, WeightedGraph
 {
-	abstract double getEdgeWeight(Vertex a, Vertex b);
-	abstract boolean setEdgeWeight(Vertex a, Vertex b);
-	
+	void addEdge(DWE edge);
 }

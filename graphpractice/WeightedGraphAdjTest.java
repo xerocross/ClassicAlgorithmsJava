@@ -5,10 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import org.junit.Test;
 
-public class WeightedGraphTest {
+public class WeightedGraphAdjTest {
 
 	
 	@Test
@@ -16,10 +15,10 @@ public class WeightedGraphTest {
 	{
 		Vertex vA = new Vertex("A");
 		Vertex vB = new Vertex("B");
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		g.addVertex(vA);
-		assertTrue(g.contains(vA));
-		assertTrue(!g.contains(vB));
+		assertTrue(g.containsVertex(vA));
+		assertTrue(!g.containsVertex(vB));
 	}
 	
 	@Test
@@ -27,10 +26,10 @@ public class WeightedGraphTest {
 	{
 		Vertex vA = new Vertex();
 		Vertex vB = new Vertex();
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		g.addVertex(vA);
-		assertTrue(g.contains(vA));
-		assertTrue(!g.contains(vB));
+		assertTrue(g.containsVertex(vA));
+		assertTrue(!g.containsVertex(vB));
 	}
 	
 	@Test
@@ -38,7 +37,7 @@ public class WeightedGraphTest {
 	{
 		Vertex vA = new Vertex("A");
 		Vertex vB = new Vertex("B");
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		g.addVertex(vA);
 		g.addVertex(vB);
 		g.addEdge(vA,vB,1.);
@@ -52,7 +51,7 @@ public class WeightedGraphTest {
 		Vertex vA = new Vertex("A");
 		Vertex vB = new Vertex("B");
 		WeightedEdge edge = new WeightedEdge(vA,vB,1.);
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		g.addVertex(vA);
 		g.addVertex(vB);
 		g.addEdge(edge);
@@ -61,7 +60,7 @@ public class WeightedGraphTest {
 	}
 	
 	
-	private Vertex[] populateGraph(WeightedGraph graph, int numVertices)
+	private Vertex[] populateGraph(WeightedGraphAdj graph, int numVertices)
 	{
 		Vertex w;
 		Vertex[] v = new Vertex[numVertices];
@@ -78,7 +77,7 @@ public class WeightedGraphTest {
 	public void getEdgesTest()
 	{
 		int numVertices = 4;
-		WeightedGraph graph = new WeightedGraph();
+		WeightedGraphAdj graph = new WeightedGraphAdj();
 		Vertex[] v = populateGraph(graph,numVertices);
 		Set<WeightedEdge> createdEdges = new HashSet<WeightedEdge>();
 		createdEdges.add(graph.addEdge(v[0],v[1],1.));
@@ -91,7 +90,7 @@ public class WeightedGraphTest {
 	public void getAdjacentVerticesTest()
 	{
 		int numVertices = 5;
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		Vertex[] v = populateGraph(g,numVertices);
 		g.addEdge(new WeightedEdge(v[0],v[1],1.));
 		g.addEdge(new WeightedEdge(v[0],v[2],1.));
@@ -119,7 +118,7 @@ public class WeightedGraphTest {
 			vertices.add(w);
 			v[i] = w;
 		}
-		WeightedGraph g = new WeightedGraph(vertices);
+		WeightedGraphAdj g = new WeightedGraphAdj(vertices);
 		
 		Set<Vertex> adj = new HashSet<Vertex>();
 		for (int i = 1; i < numVertices; i++)
@@ -151,7 +150,7 @@ public class WeightedGraphTest {
 			v[i] = w;
 		}
 		Vertex extra = new Vertex("extra");
-		WeightedGraph g = new WeightedGraph(vertices);
+		WeightedGraphAdj g = new WeightedGraphAdj(vertices);
 		g.addEdge(new WeightedEdge(v[0],v[1],1.));
 		assertTrue(g.isEdge(v[0], v[1]));
 		assertTrue(g.isEdge(v[1], v[0]));
@@ -164,7 +163,7 @@ public class WeightedGraphTest {
 	{
 		Vertex vA = new Vertex();
 		Vertex vB = new Vertex();
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		g.addVertex(vA);
 		g.addVertex(vB);
 		g.addEdge(new WeightedEdge(vA,vB,.1));
@@ -179,7 +178,7 @@ public class WeightedGraphTest {
 	{
 		Vertex vA = new Vertex();
 		Vertex vB = new Vertex();
-		WeightedGraph g = new WeightedGraph();
+		WeightedGraphAdj g = new WeightedGraphAdj();
 		g.addVertex(vA);
 		g.addVertex(vB);
 		g.addEdge(new WeightedEdge(vA,vB,.1));
