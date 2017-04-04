@@ -40,7 +40,52 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 			return (cmp == 0 ? Relation.EQUAL : ((cmp > 0) ? Relation.GREATER : Relation.LESS));
 		}
 	}
-	
-	
-	
+	Node put(Node node, Key key, Value value)
+	{
+		if (node == null) 
+			return new Node(key, value);
+		Relation rel = getRelation(node.key,key);
+		switch(rel)
+		{
+		case LESS:
+			node.right = put(node.right, key, value);
+			break;
+		case GREATER:
+			node.left = put(node.left, key, value);
+			break;
+		case EQUAL:
+			node.value = value;
+			break;
+		}
+		updateSize(node);
+		return node;
+	}
+	Relation getRelation(Key x, Key y)
+	{
+		int cmp = x.compareTo(y);
+		return (cmp == 0 ? Relation.EQUAL : ((cmp > 0) ? Relation.GREATER : Relation.LESS));
+	}
+	void updateSize(Node node)
+	{
+		node.size = (node.left == null ? 0 : node.left.size) 
+				+ (node.right == null ? 0 : node.right.size) 
+				+ 1;
+	}
+	Node get(Node node, Key key)
+	{
+		if (node == null)
+			return null;
+		Relation rel = getRelation(node.key, key);
+		switch(rel)
+		{
+		case LESS:
+			return get(node.right, key);
+		case GREATER:
+			return get(node.left, key);
+		case EQUAL:
+			return node;
+		default:
+			throw new RuntimeException();
+		}
+	}
 }
