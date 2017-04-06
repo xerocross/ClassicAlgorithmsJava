@@ -3,7 +3,6 @@ package crossutil;
 import static org.junit.Assert.*;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import crossutil.Quicksort.Pair;
 import crossutil.Quicksort.QuickSorter;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class QuicksortTest
 		Quicksort.QuickSorter<Integer>  sorter = new QuickSorter<Integer>();
 		sorter.list = list;
 		int size = list.size();
-		Pair<Integer> pivot = sorter.getPivot(1, 6);
+		IndexValuePair<Integer> pivot = sorter.getPivot(1, 6);
 		assertTrue(pivot.value == 53);
 	
 		pivot = sorter.getPivot(0, size);
@@ -59,29 +58,14 @@ public class QuicksortTest
 		thrown.expect(RuntimeException.class);
 		sorter.getPivot(-1,2);
 	}
-
-	@Test
-	public void getPivot_short()
-	{
-		List<Integer> list = java.util.Arrays.asList(new Integer[] {26, 16});
-		Quicksort.QuickSorter<Integer>  sorter = new QuickSorter<Integer>();
-		sorter.list = list;
-		assertTrue(sorter.getPivot(0,2).value == 26);
-		
-		list = java.util.Arrays.asList(new Integer[] {26});
-		sorter = new QuickSorter<Integer>();
-		sorter.list = list;
-		assertTrue(sorter.getPivot(0,1).value == 26);
-	}
-	
 	@Test
 	public void getNextInversionPairTest()
 	{
 		List<Integer> list = java.util.Arrays.asList(new Integer[] {26, 16, 81, 53, 54, 68, 11, 98, 20, 45, 7, 33, 29, 13, 50});
 		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
 		sorter.list = list;
-		Pair<Integer> pivot = new Pair<Integer>(9,45);
-		Quicksort.IndexPair invPair;
+		IndexValuePair<Integer> pivot = new IndexValuePair<Integer>(9,45);
+		IndexPair invPair;
 		invPair = null;
 		invPair = sorter.getNextInversionPair(invPair, 0, list.size(), pivot);
 		assertTrue(invPair.left == 2);
@@ -93,8 +77,8 @@ public class QuicksortTest
 		List<Integer> list = java.util.Arrays.asList(new Integer[] {26, 16, 81, 53, 54, 68, 11, 98, 20, 45, 7, 33, 29, 13, 50});
 		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
 		sorter.list = list;
-		Pair<Integer> pivot = new Pair<Integer>(0,26);
-		Quicksort.IndexPair invPair;
+		IndexValuePair<Integer> pivot = new IndexValuePair<Integer>(0,26);
+		IndexPair invPair;
 		invPair = null;
 		invPair = sorter.getNextInversionPair(invPair, 0, list.size(), pivot);
 		assertTrue(invPair.left == 2);
@@ -107,8 +91,8 @@ public class QuicksortTest
 		List<Integer> list = java.util.Arrays.asList(new Integer[] {26, 16, 81, 53, 54, 68, 11, 98, 20, 45, 7, 33, 29, 13, 50});
 		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
 		sorter.list = list;
-		Pair<Integer> pivot;
-		Quicksort.IndexPair invPair;
+		IndexValuePair<Integer> pivot;
+		IndexPair invPair;
 		int cutIndex = 7; //at value 98
 		
 		pivot = sorter.getPivot(0, cutIndex);
@@ -122,7 +106,7 @@ public class QuicksortTest
 		//pivot is 50, occurs at index 14
 		invPair = null;
 		invPair = sorter.getNextInversionPair(invPair, cutIndex, list.size(), pivot);
-		Quicksort.IndexPair expectedPair = new Quicksort.IndexPair(7, 13);
+		IndexPair expectedPair = new IndexPair(7, 13);
 		assertTrue(invPair.equals(expectedPair));
 		assertTrue(invPair.left == 7);
 		assertTrue(invPair.right == 13);
@@ -134,8 +118,8 @@ public class QuicksortTest
 		List<Integer> list = java.util.Arrays.asList(new Integer[] {26, 16, 81, 53, 54, 68, 11, 98, 20, 45, 7, 33, 29, 13, 50});
 		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
 		sorter.list = list;
-		Pair<Integer> pivot;
-		Quicksort.IndexPair invPair;
+		IndexValuePair<Integer> pivot;
+		IndexPair invPair;
 		int startIndex = 7; //at value 98
 		int endIndex = list.size();
 		pivot = sorter.getPivot(startIndex, endIndex);
@@ -143,25 +127,26 @@ public class QuicksortTest
 		invPair = null;
 		invPair = sorter.getNextInversionPair(invPair, startIndex, endIndex, pivot);
 		// 7, 13
-		sorter.swap(invPair);
+		sorter.swap(invPair.left,invPair.right);
 		invPair = sorter.getNextInversionPair(invPair,startIndex, endIndex, pivot);
 		//9, 12
-		Quicksort.IndexPair expectedPair = new Quicksort.IndexPair(13, 12);
+		IndexPair expectedPair = new IndexPair(13, 12);
 		assertTrue(invPair.equals(expectedPair));
 	}
 
-	private boolean isPartitioned(List<Integer> list, Pair<Integer> pivot, int startIndex, int endIndex)
+	private boolean isPartitioned(List<Integer> list, int startIndex, int endIndex, int pivotIndex)
 	{
-		for (int i = startIndex; i < pivot.index; i++)
+		Integer pivotValue = list.get(pivotIndex);
+		for (int i = startIndex; i < pivotIndex; i++)
 		{
-			if (list.get(i) > pivot.value)
+			if (list.get(i) > pivotValue)
 			{
 				return false;
 			}
 		}
-		for (int i = pivot.index; i < endIndex; i++)
+		for (int i = pivotIndex; i < endIndex; i++)
 		{
-			if (list.get(i) < pivot.value)
+			if (list.get(i) < pivotValue)
 			{
 				return false;
 			}
@@ -177,9 +162,8 @@ public class QuicksortTest
 		Quicksort.QuickSorter<Integer> sorter = new QuickSorter<Integer>();
 		sorter.list = list;
 		int startIndex = 0, endIndex = list.size();
-		Pair<Integer> pivot;
-		pivot = sorter.partition(startIndex, endIndex);
-		boolean isPartitioned = isPartitioned(list, pivot, startIndex, endIndex);
+		int pivotIndex = sorter.partitionTheSublist(startIndex, endIndex);
+		boolean isPartitioned = isPartitioned(list, startIndex, endIndex, pivotIndex);
 		assertTrue(isPartitioned);
 	}
 	
@@ -194,7 +178,7 @@ public class QuicksortTest
 			sorter.list = list;
 			int startIndex = 0;
 			int endIndex = list.size();
-			sorter.partitionRecursive(startIndex, endIndex);
+			sorter.sort(startIndex, endIndex);
 			boolean isSorted = Arrays.isSorted(list);
 			assertTrue(isSorted);
 		}
@@ -205,7 +189,7 @@ public class QuicksortTest
 		int numRounds = 40;
 		for (int i = 0; i < numRounds; i++)
 		{
-			List<Integer> list = Arrays.randomIntegerArrayList(15+11*i, 100+20*i);
+			List<Integer> list = Arrays.randomIntegerArrayList(1+3*i, 100+20*i);
 			Quicksort.sort(list);
 			boolean isSorted = Arrays.isSorted(list);
 			assertTrue(isSorted);

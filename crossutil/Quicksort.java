@@ -3,78 +3,85 @@ package crossutil;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * This Quicksort class is an amateur implementation
+ * written for practice.  The pivot is chosen as the 
+ * median of the first, middle, and last in each sub-
+ * list.  The algorithm is almost completely
+ * standard, but I have been more verbose than usual.
+ * My goal in writing this was to make it 
+ * readable---not necessarily to optimize it for speed.
+ * For whatever reason, I tend to have problems keeping
+ * track of the indices when writing quicksort, so I
+ * was attempting to write this class so that there 
+ * was absolutely no place for indexing errors to hide. 
+ * 
+ * @author Adam Cross
+ *
+ */
 public abstract class Quicksort
 {
 	static class QuickSorter<T extends Comparable<T>>
 	{
 		List<T> list;
-		
-		public QuickSorter()
-		{
-		}
-		public synchronized List<T> sort(List<T> list)
+		QuickSorter(){}
+		public List<T> sort(List<T> list)
 		{
 			this.list = list;
-			partitionRecursive(0, list.size());
+			sort(0, list.size());
 			return list;
 		}
-		public synchronized List<T> sort(T[] array)
+		IndexPair swapAllInversionPairs(IndexPair invPair, int beginIndex, int endIndex, IndexValuePair<T> pivot)
 		{
-			return null;
-		}
-		
-		synchronized Pair<T> partition(int beginIndex, int endIndex)
-		{
-			Pair<T> pivot = getPivot(beginIndex, endIndex);
-			IndexPair invPair = getNextInversionPair(null, beginIndex, endIndex, pivot);
+			invPair = getNextInversionPair(invPair, beginIndex, endIndex, pivot);
 			while (invPair.left < invPair.right)
 			{
-				swap(invPair);
-				invPair = getNextInversionPair(invPair, beginIndex, endIndex, pivot );
+				swap(invPair.left, invPair.right);
+				invPair = getNextInversionPair(invPair, beginIndex, endIndex, pivot);
 			}
+			return invPair;
+		}
+		
+		Integer partitionTheSublist(int beginIndex, int endIndex)
+		{
+			IndexValuePair<T> pivot = getPivot(beginIndex, endIndex);
+			IndexPair invPair = null;
+			invPair = swapAllInversionPairs(invPair, beginIndex, endIndex, pivot);
+			//
+			
 			int pivotLowerBound = invPair.right;
 			int pivotUpperBound = invPair.left;
 			if (pivotLowerBound >= pivotUpperBound)
 				throw new RuntimeException();
 			pivot = pivotToFinalPosition(pivot, pivotLowerBound, pivotUpperBound);
-			return pivot;
+			return pivot.index;
 		}
 		
-		void partitionRecursive(int beginIndex, int endIndex)
+		void sort(int beginIndex, int endIndex)
 		{
-			int length = endIndex - beginIndex;
-			if (length <= 10)
+			boolean sublistIsQuiteShort = (endIndex - beginIndex <= 10);
+			if (sublistIsQuiteShort)
 			{
 				insertionSort(list, beginIndex, endIndex);
-				return;
+			} else {
+				int pivotIndex = partitionTheSublist(beginIndex, endIndex);
+				sort(beginIndex, pivotIndex);
+				sort(pivotIndex, endIndex);
 			}
-			Pair<T> pivot = partition(beginIndex, endIndex);
-			
-			int partitionIndex = pivot.index;
-			if (partitionIndex > beginIndex)
-				partitionRecursive(beginIndex, partitionIndex);
-			if (endIndex > partitionIndex )
-				partitionRecursive(partitionIndex + 1, endIndex);
 		}
-		
-		Pair<T> getPivot(int beginIndex, int endIndex)
+		IndexValuePair<T> getPivot(int beginIndex, int endIndex)
 		{
 			int length = endIndex - beginIndex;
-			if (length <= 2)
-				return new Pair<T>(list, beginIndex);
-			else
-			{
-				int halfway = beginIndex + length/2;
-				int maxIndex = endIndex - 1;
-				Pair<T> first = new Pair<>(list, beginIndex);
-				Pair<T> middle = new Pair<>(list, halfway);
-				Pair<T> last = new Pair<>(list, maxIndex);
-				return getMedianOf(first,middle,last);
-			}
+			IndexValuePair<T> first, middle, last;
+			int halfway = beginIndex + length/2;
+			int maxIndex = endIndex - 1;
+			first = new IndexValuePair<>(beginIndex, list.get(beginIndex));
+			middle = new IndexValuePair<>(halfway, list.get(halfway));
+			last = new IndexValuePair<>(maxIndex, list.get(maxIndex));
+			return getMedianOf(first, middle, last);
 		}
 		
-		IndexPair getNextInversionPair(IndexPair inversionPair, int startIndex, int endIndex, Pair<T> pivot)
+		IndexPair getNextInversionPair(IndexPair inversionPair, int startIndex, int endIndex, IndexValuePair<T> pivot)
 		{
 			int leftIndex, rightIndex;
 			if (inversionPair == null)
@@ -92,12 +99,7 @@ public abstract class Quicksort
 				leftIndex++;
 			while (rightIndex > lowerBound && list.get(rightIndex).compareTo(pivot.value) >= 0)
 				rightIndex--;
-			IndexPair nextInversionPair = new IndexPair(leftIndex, rightIndex);
-			return nextInversionPair;
-		}
-		void swap(IndexPair p)
-		{
-			swap(p.left,p.right);
+			return new IndexPair(leftIndex, rightIndex);
 		}
 		void swap(int i, int j)
 		{
@@ -105,43 +107,24 @@ public abstract class Quicksort
 			list.set(i, list.get(j));
 			list.set(j, placeholder);
 		}
-		Pair<T> pivotToFinalPosition(Pair<T> pivot,  int leftBound, int rightBound)
+		IndexValuePair<T> pivotToFinalPosition(IndexValuePair<T> pivot,  int leftBound, int rightBound)
 		{
 			boolean pivotIsTooFarLeft = (pivot.index < leftBound);
 			boolean pivotIsTooFarRight = (pivot.index > rightBound);
 			if (pivotIsTooFarLeft) {
 				swap(pivot.index,leftBound);
-				return new Pair<T>(leftBound, pivot.value);
+				return new IndexValuePair<T>(leftBound, pivot.value);
 			} else if (pivotIsTooFarRight)
 			{
-				swap(pivot.index,rightBound);
-				return new Pair<T>(rightBound, pivot.value);
+				swap(pivot.index, rightBound);
+				return new IndexValuePair<T>(rightBound, pivot.value);
 			} else {
 				return pivot;
 			}
 		}
 	}
 	
-	static class Pair<T extends Comparable<T>> implements Comparable<Pair<T>>
-	{
-		public T value;
-		public int index;
-		public Pair(int index, T value)
-		{
-			this.index = index;
-			this.value = value;
-		}
-		public Pair(List<T> list, int index)
-		{
-			this.index = index;
-			this.value = list.get(index);
-		}
-		public int compareTo(Pair<T> o)
-		{
-			return this.value.compareTo(o.value);
-		}
-	}
-	public  static  synchronized <T extends Comparable<T>> List<T> sort(List<T> list)
+	public static <T extends Comparable<T>> List<T> sort(List<T> list)
 	{
 		QuickSorter<T> sorter = new QuickSorter<>();
 		return sorter.sort(list);
@@ -166,28 +149,5 @@ public abstract class Quicksort
 		List<U> threeSortables = Arrays.asList(a, b, c);
 		insertionSort(threeSortables, 0, 3);
 		return threeSortables.get(1);
-	}
-	
-	static class IndexPair
-	{
-		int left;
-		int right;
-		public IndexPair(int left, int right)
-		{
-			this.left = left;
-			this.right = right;
-		}
-		public boolean equals(Object o)
-		{
-			if (o == null)
-				return false;
-			else if (o instanceof Quicksort.IndexPair)
-			{
-				Quicksort.IndexPair that = (Quicksort.IndexPair) o;
-				return (left == that.left && right == that.right);
-				
-			} else
-				return false;
-		}
 	}
 }
