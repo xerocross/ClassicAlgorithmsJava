@@ -113,18 +113,21 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 		node.right.red = false;
 		node.red = true;
 	}
+	boolean isRed(Node node)
+	{
+		return exists(node) && node.red;
+	}
 	Node balance(Node node)
 	{
-		//if (exists(node.left) && node.left.red && exists(node.left.right) && node.left.right.red)
-		//	node.left = rotateLeft(node.left);
-		if (exists(node.right) && node.right.red && (!exists(node.left) || node.left.red == false))
-			{node = rotateLeft(node); }
-		if (exists(node.left) && node.left.red && exists(node.left.left) && node.left.left.red)
-			{node = rotateRight(node);}
-		if (exists(node.left) && node.left.red && exists(node.right) && node.right.red)
-			{flipColor(node);}
+		if (isRed(node.right) && !isRed(node.left))
+			node = rotateLeft(node);
+		else if (isRed(node.left) && isRed(node.left.left))
+			node = rotateRight(node);
+		if (isRed(node.left) && isRed(node.right))
+			flipColor(node);
 		return node;
 	}
+	
 	class Node implements Comparable<Node>
 	{
 		Node left;
