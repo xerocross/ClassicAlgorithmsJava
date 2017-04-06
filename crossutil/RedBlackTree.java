@@ -10,6 +10,7 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 	public void put(Key key, Value val)
 	{
 		root = put(root, key, val);
+		root.red = false;
 	}
 	public Value get(Key key)
 	{
@@ -20,8 +21,7 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 	{
 		if (node == null) 
 			return new Node(key, value);
-		Relation rel = getRelation(node.key,key);
-		switch(rel)
+		switch(getRelation(node.key,key))
 		{
 		case LESS:
 			node.right = put(node.right, key, value);
@@ -33,6 +33,7 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 			node.value = value;
 			break;
 		}
+		node = balance(node);
 		updateSize(node);
 		return node;
 	}
@@ -81,10 +82,9 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 		boolean topIsRed = node.red;
 		boolean rightLinkIsRed = node.right.red;
 		attachLeft(newTop, node);
-		//newTop.left = node;
 		if (exists(gamma))
 			attachRight(node, gamma);
-		//node.right = gamma;
+		else node.right = null;
 		newTop.red = topIsRed;
 		newTop.left.red = rightLinkIsRed;
 		return newTop;
@@ -96,10 +96,9 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 		boolean topIsRed = node.red;
 		boolean rightLinkIsRed = node.left.red;
 		attachRight(newTop, node);
-		//newTop.right = node;
 		if (exists(gamma))
 			attachLeft(node, gamma);
-		//node.left = gamma;
+		else node.left = null;
 		newTop.red = topIsRed;
 		newTop.right.red = rightLinkIsRed;
 		return newTop;
@@ -116,12 +115,14 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 	}
 	Node balance(Node node)
 	{
-		if (exists(node.left) && node.left.red && exists(node.left.right) && node.left.right.red)
-			node.left = rotateLeft(node.left);
+		//if (exists(node.left) && node.left.red && exists(node.left.right) && node.left.right.red)
+		//	node.left = rotateLeft(node.left);
+		if (exists(node.right) && node.right.red && (!exists(node.left) || node.left.red == false))
+			{node = rotateLeft(node); }
 		if (exists(node.left) && node.left.red && exists(node.left.left) && node.left.left.red)
-			node = rotateRight(node);
+			{node = rotateRight(node);}
 		if (exists(node.left) && node.left.red && exists(node.right) && node.right.red)
-			flipColor(node);
+			{flipColor(node);}
 		return node;
 	}
 	class Node implements Comparable<Node>
