@@ -1,12 +1,8 @@
 package crossutil;
 
-import crossutil.BST.Relation;
-
 public class RedBlackTree <Key extends Comparable<Key>, Value>
 {
 	Node root;
-	
-	
 	public void put(Key key, Value val)
 	{
 		root = put(root, key, val);
@@ -16,6 +12,14 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 	{
 		Node result = get(root, key);
 		return (result == null) ? null : result.value;
+	}
+	public boolean contains(Key key)
+	{
+		return (get(root, key) == null ? false : true);
+	}
+	public int size()
+	{
+		return (root == null) ? 0 : root.size;
 	}
 	Node put(Node node, Key key, Value value)
 	{
@@ -85,8 +89,10 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 		if (exists(gamma))
 			attachRight(node, gamma);
 		else node.right = null;
+		updateSize(node);
 		newTop.red = topIsRed;
 		newTop.left.red = rightLinkIsRed;
+		updateSize(newTop);
 		return newTop;
 	}
 	Node rotateRight(Node node)
@@ -99,8 +105,10 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 		if (exists(gamma))
 			attachLeft(node, gamma);
 		else node.left = null;
+		updateSize(node);
 		newTop.red = topIsRed;
 		newTop.right.red = rightLinkIsRed;
+		updateSize(newTop);
 		return newTop;
 	}
 	boolean exists(Node node)
@@ -165,5 +173,4 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 			return (cmp == 0 ? Relation.EQUAL : ((cmp > 0) ? Relation.GREATER : Relation.LESS));
 		}
 	}
-
 }
