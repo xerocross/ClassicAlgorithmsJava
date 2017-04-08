@@ -1,53 +1,97 @@
 package crossutil;
 
 import static org.junit.Assert.*;
-
+import java.util.ArrayList;
+import org.junit.Before;
 import org.junit.Test;
 
 public class RedBlackTreeTest {
-
-	@Test
-	public void putTest() 
+	RedBlackTree<Integer, TestValue> rbt;
+	final Integer [] perm1 = {2, 29, 1, 20, 25, 21, 26, 15, 9, 13, 27, 24, 23, 5, 12, 22, 7, 14, 3, 6, 4, 17, 10, 19, 0, 16, 8, 11, 18, 28};
+	RedBlackTree<Integer, TestValue>.Node apple, banana, cherry, result;
+	
+	
+	private void testInputRearrangement(Integer[] in, Integer[] expected)
 	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		rbt.put(3,3);
-		assertTrue(rbt.root.value == 3);
+		java.util.List<Integer> outExpectedList = java.util.Arrays.asList(expected);
+		rbt = new RedBlackTree<>();
+		put(rbt, in);
+		ArrayList<Integer> outActual = RedBlackTreeTestHelper.toList(rbt);
+		assertEquals(outActual, outExpectedList);
 	}
-	@Test
-	public void getTest() 
-	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		rbt.put(3,3);
-		rbt.put(2,2);
-		rbt.put(4,4);
-		rbt.put(7,7);
-		assertTrue(rbt.get(7).equals(7));
+	
+	class TestPair {
+		Integer [] input;
+		Integer [] expectedOutput;
+		public TestPair(Integer [] input, Integer [] expectedOutput) {
+			this.input = input;
+			this.expectedOutput = expectedOutput;
+		}
 	}
-	@Test
-	public void attachLeftTest() 
+	
+	
+	
+	private void put(RedBlackTree<Integer, TestValue> rbt, Integer []ints) {
+		for (Integer i : ints)
+			rbt.put(i, new TestValue());
+	}
+	
+	@Before
+	public void setUp() {
+		rbt = new RedBlackTree<>();
+	}
+	
+	class TestValue
 	{
-		RedBlackTree<Integer, Integer>.Node apple, banana;
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
+		public TestValue(){};
+	}
+	
+	
+	@Test
+	public void putInsertsAndGetRetrieves()
+	{
+		for (int j = 0; j < 30; j++)
+		{
+			int length = 20 + 11*j;
+			rbt = new RedBlackTree<>();
+			Integer [] permutation = Arrays.permutation(length);
+			int half = length/2;
+			for (int i = 0; i < half; i++)
+				rbt.put(permutation[i], new TestValue());
+			TestValue testValue = new TestValue();
+			rbt.put(permutation[half], testValue);
+			for (int i = half + 1; i < length; i++)
+				rbt.put(permutation[i], new TestValue());
+			assertTrue(rbt.get(permutation[half]) == testValue);
+		}
+	}
+	
+	@Test
+	public void attachLeftUpdatesLinksCorrectly() 
+	{
+		RedBlackTree<Integer, TestValue>.Node apple, banana;
+		rbt = new RedBlackTree<>();
 		apple = rbt.new Node();
 		banana = rbt.new Node();
 		rbt.attachLeft(banana, apple);
 		assertTrue(banana.left == apple && apple.parent == banana);
 	}
 	@Test
-	public void attachRightTest() 
+	public void attachRightUpdatesLinksCorrectly() 
 	{
-		RedBlackTree<Integer, Integer>.Node apple, banana;
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
+		RedBlackTree<Integer, TestValue>.Node apple, banana;
+		rbt = new RedBlackTree<>();
 		apple = rbt.new Node();
 		banana = rbt.new Node();
 		rbt.attachRight(banana, apple);
 		assertTrue(banana.right == apple && apple.parent == banana);
 	}
+	
 	@Test
-	public void rotateLeftTest_form()
+	public void rotateLeftUpdatesLinksCorrectly()
 	{
-		RedBlackTree<Integer, Integer>.Node apple, banana, cherry, result;
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
+		RedBlackTree<Integer, TestValue>.Node apple, banana, cherry, result;
+		rbt = new RedBlackTree<>();
 		apple = rbt.new Node();
 		banana = rbt.new Node();
 		cherry = rbt.new Node();
@@ -57,13 +101,11 @@ public class RedBlackTreeTest {
 		assertTrue(result == cherry && result.left == apple && apple.parent == result && result.left.right == banana && banana.parent == result.left);
 	}
 	@Test
-	public void rotateLeftTest_color()
+	public void rotateLeftUpdatesColorsCorrectly()
 	{
-		RedBlackTree<Integer, Integer>.Node apple, banana, cherry, result;
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		
+		RedBlackTree<Integer, TestValue>.Node apple, banana, cherry, result;
+		rbt = new RedBlackTree<>();
 		for(int i = 0; i < 2; i++)
-		{
 			for (int j = 0; j < 2; j++)
 			{
 				apple = rbt.new Node();
@@ -78,10 +120,9 @@ public class RedBlackTreeTest {
 				result = rbt.rotateLeft(apple);
 				assertTrue(result.red == isRed1 && result.left.red == isRed2);
 			}
-		}
 	}
 	@Test
-	public void rotateRightTest_form()
+	public void rotateRightUpdatesLinksCorrectly()
 	{
 		RedBlackTree<Integer, Integer>.Node apple, banana, cherry, result;
 		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
@@ -94,13 +135,11 @@ public class RedBlackTreeTest {
 		assertTrue(result == apple && result.right == cherry && cherry.parent == result && result.right.left == banana && banana.parent == result.right);
 	}
 	@Test
-	public void rotateRightTest_color()
+	public void rotateRightUpdatesColorsCorrectly()
 	{
-		RedBlackTree<Integer, Integer>.Node apple, banana, cherry, result;
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		
+		RedBlackTree<Integer, TestValue>.Node apple, banana, cherry, result;
+		rbt = new RedBlackTree<>();
 		for(int i = 0; i < 2; i++)
-		{
 			for (int j = 0; j < 2; j++)
 			{
 				apple = rbt.new Node();
@@ -115,7 +154,6 @@ public class RedBlackTreeTest {
 				result = rbt.rotateRight(cherry);
 				assertTrue(result.red == isRed1 && result.right.red == isRed2);
 			}
-		}
 	}
 	@Test
 	public void insertInto3NodeTest_left()
@@ -179,127 +217,111 @@ public class RedBlackTreeTest {
 	}
 	
 	@Test
-	public void putRootColorTest()
+	public void rootAlwaysBlackAfterPut()
 	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		rbt.put(10, 10);
-		assertTrue(rbt.root.red == false);
-	}
-	
-	@Test
-	public void insertToRootRight()
-	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		rbt.put(10, 10);
-		rbt.put(12, 12);
-		boolean t1, t2, t3, t4;
-		t1 = rbt.root.key == 12;
-		t2 = rbt.root.left.key == 10;
-		t3 = rbt.root.left.red;
-		t4 = !rbt.root.red;
-		if (!(t1 && t2 && t3 && t4))
-			System.out.format("%s %s %s %s", t1, t2, t3, t4);
-		assertTrue(t1 && t2 && t3 && t4);
-	}
-	@Test
-	public void putAndBalanceTest_left_atRoot()
-	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		rbt.put(10, 10);
-		rbt.root.red = false;
-		rbt.put(8, 8);
-		// put left left
-		rbt.put(7, 7);
-		assertTrue(rbt.root.key == 8
-				&& rbt.root.left.key == 7
-				&& rbt.root.right.key == 10
-				&& !rbt.root.red
-				&& !rbt.root.left.red
-				&& !rbt.root.right.red);
-	}
-	
-	boolean isBalanced(RedBlackTree<Integer, Integer>.Node node)
-	{
-		if (node == null)
-			return true;
-		//System.out.println("node " + node.key);
-		boolean left = isBalanced(node.left);
-		boolean right = isBalanced(node.right);
-		boolean test = left && right;
-		test ^= (node.right == null || !node.right.red);
-		test ^= (node.left == null || !(node.left.red && node.red));
-		return test;
-	}
-	int blackCount(RedBlackTree<Integer, Integer>.Node node)
-	{
-		if (node == null)
-			return 0;
-		int left = blackCount(node.left);
-		int right = blackCount(node.right);
-		left = (node.left == null || node.left.red) ? left : left + 1;
-		right = (node.right == null || node.right.red) ? right : right + 1;
-		if (left == right)
-			return left;
-		else
-			return -1;
-	}
-	
-	
-	@Test
-	public void isBalancedTest()
-	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
+		rbt = new RedBlackTree<>();
+		int len = perm1.length;
+		for (int i = 0; i < len; i++)
 		{
-			//two left reds in a row
-			RedBlackTree<Integer, Integer>.Node apple, banana, cherry;
-			apple = rbt.new Node();
-			banana = rbt.new Node();
-			banana.red = true;
-			apple.red = true;
-			cherry = rbt.new Node();
-			cherry.red = false;
-			rbt.attachRight(apple, cherry);
-			rbt.attachLeft(apple, banana);
-			assertTrue(!isBalanced(apple));
-		}
-		{
-			//right red
-			RedBlackTree<Integer, Integer>.Node apple, banana, cherry;
-			apple = rbt.new Node();
-			cherry = rbt.new Node();
-			cherry.red = true;
-			rbt.attachRight(apple, cherry);
-			assertTrue(!isBalanced(apple));
+			rbt.put(perm1[i], new TestValue());
+			assertFalse(rbt.root.red);
 		}
 	}
 	
-	String printNode(RedBlackTree<Integer, Integer>.Node node)
-	{
-		if (node == null)
-			return "N";
-		if (node.left == null & node.right == null)
-			return String.format("%s%d", (node.red ? "R" : ""), node.key);
-		String l = printNode(node.left);
-		String r = printNode(node.right);
-		
-		return String.format("%s%d [%s | %s]", (node.red ? "R" : "") ,node.key, l , r);
-	}
 	
 	@Test
-	public void balanceTest()
+	public void randomTreeIsBalanced()
 	{
-		//RedBlackTree<Integer, Integer>.Node apple
 		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
 		Integer[] permutation = Arrays.permutation(30);
 		System.out.println(Arrays.asList(permutation));
-		
 		for (Integer i : permutation)
 			rbt.put(i, i);
-		System.out.print(printNode(rbt.root));
-		assertTrue(isBalanced(rbt.root));
-		int blackCount = blackCount(rbt.root);
+		System.out.print(RedBlackTreeTestHelper.printNode(rbt.root));
+		assertTrue(RedBlackTreeTestHelper.isBalanced(rbt.root));
+		int blackCount = RedBlackTreeTestHelper.blackCount(rbt.root);
 		System.out.println(blackCount);
 		assertTrue(blackCount != -1);
 	}
 	
+	
+	@Test
+	public void rotateLeftUpdatesSize()
+	{
+		rbt = new RedBlackTree<>();
+		apple = rbt.new Node();
+		banana = rbt.new Node();
+		cherry = rbt.new Node();
+		rbt.attachRight(apple, banana);
+		rbt.attachLeft(banana, cherry);
+		cherry.size = 1;
+		banana.size = 2;
+		apple.size = 3;
+		result = rbt.rotateLeft(apple);
+		assertEquals(banana.size, 3);
+		assertEquals(apple.size, 2);
+		assertEquals(cherry.size, 1);
+	}
+	@Test
+	public void rotateRightUpdatesSize()
+	{
+		rbt = new RedBlackTree<>();
+		apple = rbt.new Node();
+		banana = rbt.new Node();
+		cherry = rbt.new Node();
+		
+		rbt.attachLeft(banana, apple);
+		rbt.attachRight(apple, cherry);
+		cherry.size = 1;
+		banana.size = 3;
+		apple.size = 2;
+		result = rbt.rotateRight(banana);
+		assertEquals(banana.size, 2);
+		assertEquals(apple.size, 3);
+		assertEquals(cherry.size, 1);
+	}
+	@Test
+	public void putMethodUpdatesSizeCorrectly()
+	{
+		rbt = new RedBlackTree<>();
+		int len = perm1.length;
+		int expectedSize = 0;
+		for (int i = 0; i < len; i++)
+		{
+			rbt.put(perm1[i], new TestValue());
+			expectedSize++;
+			assertEquals(rbt.size(), expectedSize);
+		}
+	}
+	
+	private ArrayList<TestPair> buildPutTestTable() {
+		ArrayList<TestPair> putTestTable = new ArrayList<>();
+		putTestTable.add(new TestPair(
+				new Integer[] {20,30}, 
+				new Integer[] {30,20}
+			));
+		putTestTable.add(new TestPair(
+				new Integer[] {20,10}, 
+				new Integer[] {20,10}
+			));
+		putTestTable.add(new TestPair(
+				new Integer[] {20,15,10}, 
+				new Integer[] {15,10,20}
+			));
+		putTestTable.add(new TestPair(
+				new Integer[] {20,15,30}, 
+				new Integer[] {20,15,30}
+			));
+		putTestTable.add(new TestPair(
+				new Integer[] {20,15,17}, 
+				new Integer[] {17,15,20}
+			));
+		return putTestTable;
+	}
+	@Test
+	public void putBalanceTest() {
+		ArrayList<TestPair> putTestTable = buildPutTestTable();
+		for (TestPair tp : putTestTable)
+			testInputRearrangement(tp.input, tp.expectedOutput);
+	}
 }
