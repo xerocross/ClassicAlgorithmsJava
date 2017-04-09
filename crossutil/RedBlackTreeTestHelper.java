@@ -2,6 +2,7 @@ package crossutil;
 import java.util.*;
 
 public class RedBlackTreeTestHelper {
+
 	static <U extends Comparable<U>,V> void toList(RedBlackTree<U,V>.Node node, int index, ArrayList<U> list)
 	{
 		while (list.size() <= index)
@@ -52,5 +53,9 @@ public class RedBlackTreeTestHelper {
 		String l = printNode(node.left);
 		String r = printNode(node.right);
 		return String.format("%s%d [%s | %s]", (node.red ? "R" : "") ,node.key, l , r);
+	}
+	static void put(RedBlackTree<Integer, TestValue> rbt, Integer []ints) {
+		for (Integer i : ints)
+			rbt.put(i, new TestValue());
 	}
 }

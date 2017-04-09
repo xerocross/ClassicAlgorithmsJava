@@ -15,7 +15,7 @@ public class RedBlackTreeTest {
 	{
 		java.util.List<Integer> outExpectedList = java.util.Arrays.asList(expected);
 		rbt = new RedBlackTree<>();
-		put(rbt, in);
+		RedBlackTreeTestHelper.put(rbt, in);
 		ArrayList<Integer> outActual = RedBlackTreeTestHelper.toList(rbt);
 		assertEquals(outActual, outExpectedList);
 	}
@@ -29,21 +29,11 @@ public class RedBlackTreeTest {
 		}
 	}
 	
-	
-	
-	private void put(RedBlackTree<Integer, TestValue> rbt, Integer []ints) {
-		for (Integer i : ints)
-			rbt.put(i, new TestValue());
-	}
+
 	
 	@Before
 	public void setUp() {
 		rbt = new RedBlackTree<>();
-	}
-	
-	class TestValue
-	{
-		public TestValue(){};
 	}
 	
 	
@@ -165,6 +155,7 @@ public class RedBlackTreeTest {
 		banana = rbt.new Node(8,8);
 		banana.red = true;
 		rbt.root = apple;
+		apple.red = false;
 		rbt.attachLeft(apple, banana);
 		//attach new node at left
 		cherry = rbt.new Node(7,7);
@@ -184,6 +175,7 @@ public class RedBlackTreeTest {
 		banana = rbt.new Node(8,8);
 		banana.red = true;
 		rbt.root = apple;
+		apple.red = false;
 		rbt.attachLeft(apple, banana);
 		//attach new node at middle
 		cherry = rbt.new Node(9,9);
@@ -206,6 +198,7 @@ public class RedBlackTreeTest {
 		banana = rbt.new Node(8,8);
 		banana.red = true;
 		rbt.root = apple;
+		apple.red = false;
 		rbt.attachLeft(apple, banana);
 		//attach new node at right
 		cherry = rbt.new Node(11,11);
@@ -232,16 +225,20 @@ public class RedBlackTreeTest {
 	@Test
 	public void randomTreeIsBalanced()
 	{
-		RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
-		Integer[] permutation = Arrays.permutation(30);
-		System.out.println(Arrays.asList(permutation));
-		for (Integer i : permutation)
-			rbt.put(i, i);
-		System.out.print(RedBlackTreeTestHelper.printNode(rbt.root));
-		assertTrue(RedBlackTreeTestHelper.isBalanced(rbt.root));
-		int blackCount = RedBlackTreeTestHelper.blackCount(rbt.root);
-		System.out.println(blackCount);
-		assertTrue(blackCount != -1);
+		int length = 30;
+		for (int j = 0; j < 40; j++)
+		{
+			RedBlackTree<Integer, Integer> rbt = new RedBlackTree<>();
+			Integer[] permutation = Arrays.permutation(length + 17*j);
+			System.out.println(Arrays.asList(permutation));
+			for (Integer i : permutation)
+				rbt.put(i, i);
+			System.out.print(RedBlackTreeTestHelper.printNode(rbt.root));
+			assertTrue(RedBlackTreeTestHelper.isBalanced(rbt.root));
+			int blackCount = RedBlackTreeTestHelper.blackCount(rbt.root);
+			System.out.println(blackCount);
+			assertTrue(blackCount != -1);
+		}
 	}
 	
 	
