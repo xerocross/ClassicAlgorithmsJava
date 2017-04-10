@@ -1,6 +1,7 @@
 package crossgraphs;
 
-public abstract class Digraph 
+public interface Digraph 
 {
-
+	public void addEdge(Integer head, Integer tail);
+	public Iterable<Integer> adj(int head);
 }
