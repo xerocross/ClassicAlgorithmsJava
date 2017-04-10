@@ -16,7 +16,7 @@ public class MergeSortPerformanceTest {
 			List<Integer> listA = Arrays.randomIntegerArrayList(20_000, 400_000);
 			List<Integer> listB = new ArrayList<>(listA);
 			start = System.currentTimeMillis();
-			MergeSort.sort(listA);
+			MergeSort1.sort(listA);
 			stop = System.currentTimeMillis();
 			timeMergeSort1+= (stop - start);
 			

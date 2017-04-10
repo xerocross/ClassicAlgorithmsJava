@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Adam Cross
  */
-public class MergeSort
+public class MergeSort1
 {
 	/*
 	 * Merge two sorted lists into a single sorted list
