@@ -171,7 +171,7 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 	 * rotateRight(Node) performs a local rotation
 	 *  as illustrated here.
 	 *           T                   T
-	 *  	         |                   |
+	 *  		     |                   |
 	 *           B                   A
 	 *         /                       \
 	 *      A            ->              B
@@ -316,7 +316,8 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 		
 		if (isRed(node.left) && isRed(node.left.left) && isRed(node.right))
 			throw new IllegalArgumentException("tree is ill-posed");
-		switch (getCase(node))
+		LocalBranchCase rel = getCase(node);
+		switch (rel)
 		{
 		case RIGHT_ONLY_RED:
 			//               node
@@ -327,7 +328,7 @@ public class RedBlackTree <Key extends Comparable<Key>, Value>
 			assert this.getCase(node).equals(LocalBranchCase.LEFT_RED_BLACK);
 			break;
 		case TWO_LEFT_RED:
-			//               node
+			//          	     node
 			//              /    \
 			//            red    [?]
 			//            /
