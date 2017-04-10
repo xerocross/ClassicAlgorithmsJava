@@ -1,6 +1,6 @@
 package crossgraphs;
 
-public abstract class WeightedDigraph 
+public interface WeightedDigraph 
 {
-
+	//public void addEdge(int head, int tail, double weight);
 }
