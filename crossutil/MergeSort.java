@@ -1,71 +1,57 @@
 package crossutil;
-
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * This is a standard implementation
+ * of the classic mergesort algorithm.
+ * 
+ * @author Adam Cross
+ */
 public class MergeSort
 {
-    
-    public static void main(String[] args)
-    {
-        ArrayList<Integer> testList = new ArrayList<>();
-        testList.add(5);
-        testList.add(12);
-        testList.add(2);
-        testList.add(99);
-        testList.add(1);
-        testList.add(42);
-        testList.add(7);
-        ArrayList<Integer> sorted = MergeSort.mergesort(testList);
-        System.out.println(sorted);
-   }
-    
-    
-    private static <T extends Comparable<T>> ArrayList<T> mergeSorted(ArrayList<T> a, ArrayList<T> b)
-    {
-        ArrayList<T> newSorted = new ArrayList<T>();
-        int sizeA = a.size();
-        int sizeB = b.size();
-        int indexA = 0;
-        int indexB = 0;
-        
-        while (indexA < sizeA && indexB < sizeB)
-        {
-            T itemA = a.get(indexA);
-            T itemB = b.get(indexB);
-            if (itemA.compareTo(itemB) > 0)
-            {
-                newSorted.add(itemB);
-                indexB++;
+	/*
+	 * Merge two sorted lists into a single sorted list
+	 * containing the elements from both input lists.  No
+	 * behavior is guaranteed if input lists are not sorted.  
+	 */
+    private static <T extends Comparable<T>> List<T> mergeSorted(List<T> flist, List<T> blist) {
+    		ArrayList<T> newSorted = new ArrayList<T>();
+        int fsize = flist.size();
+        int bsize = blist.size();
+        int findex = 0, bindex = 0;
+        while (findex < fsize && bindex < bsize) {
+            T fitem = flist.get(findex);
+            T bitem = blist.get(bindex);
+            if (fitem.compareTo(bitem) > 0) {// <- compare keys
+                newSorted.add(bitem);
+                bindex++;
             } else {
-                newSorted.add(itemA);
-                indexA++;
+                newSorted.add(fitem);
+                findex++;
             }
         }
-        while (indexA < sizeA)
-        {
-            newSorted.add(a.get(indexA++));
-        }
-        while (indexB < sizeB)
-        {
-            newSorted.add(b.get(indexB++));
-        }
+        while (findex < fsize) 
+            newSorted.add(flist.get(findex++));
+        while (bindex < bsize) 
+            newSorted.add(blist.get(bindex++));
         return newSorted;
     }
 
-
-    public static <T extends Comparable<T>> ArrayList<T> mergesort(ArrayList<T> arr)
-    {
-        int size = arr.size();
+    /**
+     * 
+     * @param list A java.util.List containing comparable elements
+     * to be sorted.
+     * @return A List containing the elements of the input list
+     * in sorted order from lesser to greater.
+     */
+    public static <T extends Comparable<T>> List<T> sort(List<T> list) {
+        int size = list.size();
         if (size < 2)
-            return arr;
+            return list;
         int half = size/2;
-        ArrayList<T> frontHalf = new ArrayList<>(arr.subList(0,half));
-        ArrayList<T> backHalf = new ArrayList<>(arr.subList(half,size));
-        frontHalf = mergesort(frontHalf);
-        backHalf = mergesort(backHalf);
-        return mergeSorted(frontHalf, backHalf);
+        List<T> frontHalf = list.subList(0,half);
+        List<T> backHalf = list.subList(half,size);
+        return mergeSorted(sort(frontHalf), sort(backHalf));
     }
-
-
-
 }
